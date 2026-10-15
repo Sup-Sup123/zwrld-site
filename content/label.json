@@ -1,0 +1,34 @@
+{
+  "_note": "Label page (zwrld.org/label/). Change 'name' here to rename the label everywhere on the page (e.g. add 'Inc' once incorporated). Submissions go to the form endpoint below and are emailed to zwrld@zwrld.org.",
+  "name": "ZWrld Music",
+  "tagline": "Independent label · Colorado",
+  "about": "ZWrld Music is an independent record label founded by the artist ZWrld in Colorado. We release country, hip-hop and faith-inspired music from artists with something real to say, and we help them get it heard.",
+  "roster": [
+    {
+      "name": "ZWrld",
+      "genre": "Country · Hip-hop · Faith",
+      "image": "assets/i-still-miss-you-cover.jpg",
+      "url": "https://open.spotify.com/artist/3NOvBcSzOHUpAqjqtWXLzQ",
+      "link_label": "Listen on Spotify",
+      "page": ""
+    }
+  ],
+  "submit_headline": "Submit your music",
+  "submit_intro": "Got a song you believe in? Send us a link. We listen to every submission and reach out if it's a fit for the label.",
+  "submit_steps": [
+    "Send a link to your track (SoundCloud, YouTube, Google Drive or Dropbox). No file uploads.",
+    "Only send music you wrote and recorded, or have the rights to.",
+    "We listen to everything. If it's a fit, we'll email you about next steps."
+  ],
+  "genres": [
+    "Country",
+    "Hip-hop / Rap",
+    "Country rap",
+    "Christian / Gospel",
+    "Pop",
+    "R&B",
+    "Rock",
+    "Other"
+  ],
+  "submit_endpoint": ""
+}
