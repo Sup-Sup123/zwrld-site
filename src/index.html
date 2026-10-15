@@ -21,39 +21,63 @@
 <meta name="twitter:description" content="Country songwriter from Northglenn, CO, raised in southern Iowa.">
 <meta name="twitter:image" content="https://zwrld.org/og.jpg">
 <link rel="icon" href="assets/blue-eyes-cover.jpg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,600;0,700;1,600&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="styles.css">
 </head>
 <body>
 <a class="skip" href="#music">Skip to music</a>
 
-<header class="hero">
+<header class="site-header">
+  <div class="bar">
+    <a class="wordmark" href="/">ZWrld</a>
 {{NAV}}
-  <h1 class="name">ZWrld</h1>
-  <p class="tag">{{TAGLINE}}</p>
-  <img class="cover" src="assets/blue-eyes-cover.jpg" width="1200" height="1200" alt="Blue Eyes single cover: a sunset photo">
-  <p class="out">New {{REL_TYPE_LOWER}} <strong>&ldquo;{{REL_TITLE}}&rdquo;</strong> out now</p>
-  <a class="btn btn-primary" href="#music">Listen</a>
+  </div>
 </header>
+
+<section class="hero" aria-label="Intro">
+  <div class="hero-art">
+    <img class="cover" src="assets/blue-eyes-cover.jpg" width="1200" height="1200" alt="Blue Eyes single cover: a sunset photo">
+  </div>
+  <div class="hero-copy">
+    <p class="eyebrow">New {{REL_TYPE_LOWER}}</p>
+    <h1 class="name">ZWrld</h1>
+    <p class="tag">{{TAGLINE}}</p>
+    <p class="out">&ldquo;{{REL_TITLE}}&rdquo; is out now.</p>
+    <div class="actions">
+      <a class="btn btn-primary" href="#music">Listen</a>
+      <a class="btn btn-outline" href="{{REL_SC}}" target="_blank" rel="noopener">SoundCloud</a>
+    </div>
+  </div>
+</section>
 
 <main>
   <section id="music" class="section" aria-labelledby="music-h">
     <p class="kicker">Latest release</p>
     <h2 id="music-h">{{REL_TITLE}}</h2>
     <p class="meta">{{REL_TYPE}} &middot; {{REL_DATE}}</p>
-    <p class="blurb">{{REL_BLURB}}</p>
-
-    <div class="player">
-      <iframe title="{{REL_TITLE}} by ZWrld on SoundCloud" width="100%" height="166" scrolling="no" frameborder="no" allow="autoplay"
-        src="https://w.soundcloud.com/player/?url={{REL_SC_ENC}}&amp;color=%23e8894a&amp;auto_play=false&amp;hide_related=true&amp;show_comments=false&amp;show_user=true&amp;show_reposts=false&amp;show_teaser=false"></iframe>
-    </div>
-
-    <a class="btn btn-sc" href="{{REL_SC}}" target="_blank" rel="noopener">Listen on SoundCloud</a>
-
-    <div class="fallback">
-      <p class="small">Or play it right here:</p>
-      <audio controls preload="none" src="{{REL_MP3}}">
-        <a href="{{REL_MP3}}">Play {{REL_TITLE}} (MP3)</a>
-      </audio>
+    <div class="card release">
+      <div class="release-head">
+        <img class="thumb" src="assets/blue-eyes-cover.jpg" width="1200" height="1200" alt="">
+        <div>
+          <p class="release-title">{{REL_TITLE}}</p>
+          <p class="release-blurb">{{REL_BLURB}}</p>
+        </div>
+      </div>
+      <div class="player">
+        <iframe title="{{REL_TITLE}} by ZWrld on SoundCloud" width="100%" height="166" scrolling="no" frameborder="no" allow="autoplay"
+          src="https://w.soundcloud.com/player/?url={{REL_SC_ENC}}&amp;color=%23e8894a&amp;auto_play=false&amp;hide_related=true&amp;show_comments=false&amp;show_user=true&amp;show_reposts=false&amp;show_teaser=false"></iframe>
+      </div>
+      <div class="actions">
+        <a class="btn btn-primary" href="{{REL_SC}}" target="_blank" rel="noopener">Listen on SoundCloud</a>
+      </div>
+      <div class="fallback">
+        <p class="small">Or play it right here</p>
+        <audio controls preload="none" src="{{REL_MP3}}">
+          <a href="{{REL_MP3}}">Play {{REL_TITLE}} (MP3)</a>
+        </audio>
+      </div>
     </div>
   </section>
 
@@ -68,7 +92,7 @@
     <p class="kicker">About</p>
     <h2 id="about-h" class="visually-hidden">About ZWrld</h2>
     <p class="about">{{ABOUT_SHORT}}</p>
-    <p class="small"><a href="/about.html">Read more about ZWrld</a></p>
+    <p class="small"><a href="/about.html">Read more about ZWrld &rarr;</a></p>
   </section>
 
   <section id="contact" class="section" aria-labelledby="contact-h">
@@ -76,12 +100,16 @@
     <h2 id="contact-h">Find ZWrld</h2>
 {{SOCIALS}}
     <p class="contact">Email: <a href="mailto:{{BOOKING_EMAIL}}">{{BOOKING_EMAIL}}</a></p>
-    <p class="small"><a class="btn btn-sc" href="/contact.html">Send a message</a></p>
+    <div class="actions"><a class="btn btn-outline" href="/contact.html">Send a message</a></div>
   </section>
 </main>
 
 <footer class="footer">
-  <p>&copy; 2026 ZWrld</p>
+  <div class="footer-inner">
+    <a class="wordmark small-mark" href="/">ZWrld</a>
+    <nav class="footer-nav" aria-label="Footer"><a href="/">Home</a><a href="/about.html">About</a><a href="/newsletter/">Newsletter</a><a href="/contact.html">Contact</a></nav>
+    <p class="copy">&copy; 2026 ZWrld &middot; <a href="mailto:{{BOOKING_EMAIL}}">{{BOOKING_EMAIL}}</a></p>
+  </div>
 </footer>
 <script src="https://identity.netlify.com/v1/netlify-identity-widget.js" defer></script>
 <script>

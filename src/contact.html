@@ -13,6 +13,9 @@
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:image" content="https://zwrld.org/og.jpg">
 <link rel="icon" href="assets/blue-eyes-cover.jpg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,600;0,700;1,600&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="styles.css">
 <title>Contact ZWrld &middot; Booking, press &amp; radio</title>
 <meta name="description" content="Get in touch with ZWrld for booking, press, radio, or fan mail.">
@@ -24,9 +27,11 @@
 <meta name="twitter:description" content="Get in touch with ZWrld for booking, press, radio, or fan mail.">
 </head>
 <body>
-<header class="hero hero-sub">
+<header class="site-header">
+  <div class="bar">
+    <a class="wordmark" href="/">ZWrld</a>
 {{NAV}}
-  <p class="name name-sm"><a href="/">ZWrld</a></p>
+  </div>
 </header>
 <main>
   <section class="section section-first" aria-labelledby="contact-h">
@@ -57,7 +62,11 @@
   </section>
 </main>
 <footer class="footer">
-  <p>&copy; 2026 ZWrld &middot; <a href="/">Home</a> &middot; <a href="/about.html">About</a> &middot; <a href="/blog/">Blog</a> &middot; <a href="/contact.html">Contact</a></p>
+  <div class="footer-inner">
+    <a class="wordmark small-mark" href="/">ZWrld</a>
+    <nav class="footer-nav" aria-label="Footer"><a href="/">Home</a><a href="/about.html">About</a><a href="/newsletter/">Newsletter</a><a href="/contact.html">Contact</a></nav>
+    <p class="copy">&copy; 2026 ZWrld &middot; <a href="mailto:{{BOOKING_EMAIL}}">{{BOOKING_EMAIL}}</a></p>
+  </div>
 </footer>
 </body>
 </html>

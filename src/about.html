@@ -13,6 +13,9 @@
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:image" content="https://zwrld.org/og.jpg">
 <link rel="icon" href="assets/blue-eyes-cover.jpg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,600;0,700;1,600&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="styles.css">
 <title>About ZWrld &middot; Country songwriter from Northglenn, CO</title>
 <meta name="description" content="ZWrld is a country songwriter from Northglenn, Colorado, raised in southern Iowa. His debut single Blue Eyes is a tribute to his late dad.">
@@ -24,9 +27,11 @@
 <meta name="twitter:description" content="ZWrld is a country songwriter from Northglenn, Colorado, raised in southern Iowa. His debut single Blue Eyes is a tribute to his late dad.">
 </head>
 <body>
-<header class="hero hero-sub">
+<header class="site-header">
+  <div class="bar">
+    <a class="wordmark" href="/">ZWrld</a>
 {{NAV}}
-  <p class="name name-sm"><a href="/">ZWrld</a></p>
+  </div>
 </header>
 <main>
   <section class="section section-first" aria-labelledby="about-h">
@@ -35,18 +40,22 @@
     <p class="meta">{{TAGLINE}}</p>
     <img class="cover cover-sm" src="assets/blue-eyes-cover.jpg" width="1200" height="1200" alt="Blue Eyes single cover: a sunset photo">
     <div class="prose">{{ABOUT_BIO}}</div>
-    <a class="btn btn-primary" href="{{REL_SC}}" target="_blank" rel="noopener">Listen to {{REL_TITLE}}</a>
+    <div class="actions"><a class="btn btn-primary" href="{{REL_SC}}" target="_blank" rel="noopener">Listen to {{REL_TITLE}}</a></div>
     <p class="small"><a href="{{SOCIAL_SOUNDCLOUD}}" target="_blank" rel="noopener">ZWrld on SoundCloud</a></p>
   </section>
   <section class="section" aria-labelledby="press-h">
     <p class="kicker">Booking &amp; press</p>
     <h2 id="press-h" class="visually-hidden">Booking and press</h2>
     <p class="contact">For booking &amp; press: <a href="mailto:{{BOOKING_EMAIL}}">{{BOOKING_EMAIL}}</a></p>
-    <p class="small"><a class="btn btn-sc" href="/contact.html">Send a message</a></p>
+    <div class="actions"><a class="btn btn-outline" href="/contact.html">Send a message</a></div>
   </section>
 </main>
 <footer class="footer">
-  <p>&copy; 2026 ZWrld &middot; <a href="/">Home</a> &middot; <a href="/about.html">About</a> &middot; <a href="/blog/">Blog</a> &middot; <a href="/contact.html">Contact</a></p>
+  <div class="footer-inner">
+    <a class="wordmark small-mark" href="/">ZWrld</a>
+    <nav class="footer-nav" aria-label="Footer"><a href="/">Home</a><a href="/about.html">About</a><a href="/newsletter/">Newsletter</a><a href="/contact.html">Contact</a></nav>
+    <p class="copy">&copy; 2026 ZWrld &middot; <a href="mailto:{{BOOKING_EMAIL}}">{{BOOKING_EMAIL}}</a></p>
+  </div>
 </footer>
 </body>
 </html>

@@ -13,32 +13,41 @@
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:image" content="https://zwrld.org/og.jpg">
 <link rel="icon" href="assets/blue-eyes-cover.jpg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,600;0,700;1,600&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="styles.css">
 <title>{{POST_TITLE}} &middot; ZWrld</title>
 <meta name="description" content="{{POST_SUMMARY}}">
 <meta property="og:title" content="{{POST_TITLE}} &middot; ZWrld">
 <meta property="og:description" content="{{POST_SUMMARY}}">
-<meta property="og:url" content="https://zwrld.org/blog/{{POST_SLUG}}/">
-<link rel="canonical" href="https://zwrld.org/blog/{{POST_SLUG}}/">
+<meta property="og:url" content="https://zwrld.org/newsletter/{{POST_SLUG}}/">
+<link rel="canonical" href="https://zwrld.org/newsletter/{{POST_SLUG}}/">
 <meta name="twitter:title" content="{{POST_TITLE}} &middot; ZWrld">
 <meta name="twitter:description" content="{{POST_SUMMARY}}">
 </head>
 <body>
-<header class="hero hero-sub">
+<header class="site-header">
+  <div class="bar">
+    <a class="wordmark" href="/">ZWrld</a>
 {{NAV}}
-  <p class="name name-sm"><a href="/">ZWrld</a></p>
+  </div>
 </header>
 <main>
   <article class="section section-first post" aria-labelledby="post-h">
-    <p class="kicker">Blog</p>
+    <p class="kicker">Newsletter</p>
     <h2 id="post-h">{{POST_TITLE}}</h2>
     <p class="meta"><time datetime="{{POST_DATE_ISO}}">{{POST_DATE}}</time></p>
     <div class="prose">{{POST_BODY}}</div>
-    <p class="small"><a href="/blog/">&larr; All posts</a></p>
+    <p class="small"><a href="/newsletter/">&larr; All posts</a></p>
   </article>
 </main>
 <footer class="footer">
-  <p>&copy; 2026 ZWrld &middot; <a href="/">Home</a> &middot; <a href="/about.html">About</a> &middot; <a href="/blog/">Blog</a> &middot; <a href="/contact.html">Contact</a></p>
+  <div class="footer-inner">
+    <a class="wordmark small-mark" href="/">ZWrld</a>
+    <nav class="footer-nav" aria-label="Footer"><a href="/">Home</a><a href="/about.html">About</a><a href="/newsletter/">Newsletter</a><a href="/contact.html">Contact</a></nav>
+    <p class="copy">&copy; 2026 ZWrld &middot; <a href="mailto:{{BOOKING_EMAIL}}">{{BOOKING_EMAIL}}</a></p>
+  </div>
 </footer>
 </body>
 </html>
