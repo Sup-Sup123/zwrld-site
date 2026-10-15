@@ -17,10 +17,11 @@ const site = json(path.join(CONTENT, "site.json"));
 const socials = json(path.join(CONTENT, "socials.json"));
 const tour = json(path.join(CONTENT, "tour.json"));
 const presave = fs.existsSync(path.join(CONTENT, "presave.json")) ? json(path.join(CONTENT, "presave.json")) : {};
+const merch = fs.existsSync(path.join(CONTENT, "merch.json")) ? json(path.join(CONTENT, "merch.json")) : {};
 const rel = site.latest_release || {};
 
 // ---- nav
-const NAV_ITEMS = [["", "Home"], ["about.html", "About"], ["presave/", "Pre-save"], ["newsletter/", "Newsletter"], ["contact.html", "Contact"]];
+const NAV_ITEMS = [["", "Home"], ["about.html", "About"], ["presave/", "Pre-save"], ["merch/", "Merch"], ["newsletter/", "Newsletter"], ["contact.html", "Contact"]];
 const nav = (current, root) => `  <nav class="nav" aria-label="Pages">\n` + NAV_ITEMS.map(([href, label]) => `    <a href="${root}${href}"${href === current ? ' aria-current="page"' : ""}>${label}</a>`).join("\n") + `\n  </nav>`;
 
 // ---- socials (only the ones with a URL show)
@@ -68,6 +69,12 @@ const common = {
 };
 const render = (tpl, vars) => tpl.replace(/\{\{([A-Z0-9_]+)\}\}/g, (_, k) => (k in vars ? vars[k] : ""));
 
+// ---- merch (content/merch.json: headline, intro, store_url, items[{name, price, url, image, blurb}]); each item links to its own shop page
+const fmtPrice = (p) => { const n = Number(p); return Number.isFinite(n) ? "$" + (Number.isInteger(n) ? String(n) : n.toFixed(2)) : esc(String(p || "")); };
+const merchItems = Array.isArray(merch.items) ? merch.items.filter(i => i && i.name && i.url) : [];
+const merchCard = (i, root) => `      <article class="merch-card">\n` + (i.image ? `        <a href="${esc(i.url)}" target="_blank" rel="noopener" aria-label="${esc(i.name)} in the shop"><img class="merch-img" src="${esc(root + i.image)}" alt="${esc(i.name)}" width="900" height="900" loading="lazy"></a>\n` : "") + `        <div class="merch-body">\n          <h3 class="merch-name">${esc(i.name)}</h3>\n` + (i.blurb ? `          <p class="merch-blurb">${esc(i.blurb)}</p>\n` : "") + `          <p class="merch-price">${fmtPrice(i.price)}</p>\n          <a class="btn btn-primary" href="${esc(i.url)}" target="_blank" rel="noopener">Buy</a>\n        </div>\n      </article>`;
+const merchGrid = merchItems.length ? `    <div class="merch-grid">\n` + merchItems.map(i => merchCard(i, "../")).join("\n") + `\n    </div>` : `    <p class="empty">Merch is on its way.</p>`;
+
 // ---- write dist
 // ROOT is the relative path back to the site root from the page being written ("./" at the top, "../" one level down, ...).
 fs.rmSync(DIST, { recursive: true, force: true }); fs.mkdirSync(DIST, { recursive: true });
@@ -77,6 +84,8 @@ for (const [file, current] of [["index.html", ""], ["about.html", "about.html"],
 const postsHtml = posts.length ? posts.map(p => `      <li><h3><a href="./${p.slug}/">${esc(p.title)}</a></h3><p class="meta"><time datetime="${p.date}">${esc(fmtDate(p.date))}</time></p>${p.summary ? `<p>${esc(p.summary)}</p>` : ""}</li>`).join("\n") : `      <li><p class="empty">First post coming soon.</p></li>`;
 fs.mkdirSync(path.join(DIST, "newsletter"), { recursive: true });
 fs.writeFileSync(path.join(DIST, "newsletter", "index.html"), render(read(path.join(SRC, "newsletter.html")), { ...common, ROOT: "../", NAV: nav("newsletter/", "../"), POSTS: postsHtml }));
+fs.mkdirSync(path.join(DIST, "merch"), { recursive: true });
+fs.writeFileSync(path.join(DIST, "merch", "index.html"), render(read(path.join(SRC, "merch.html")), { ...common, ROOT: "../", NAV: nav("merch/", "../"), MERCH_HEADLINE: esc(merch.headline || "Merch"), MERCH_INTRO: esc(merch.intro || ""), MERCH_GRID: merchGrid, MERCH_STORE: esc(merch.store_url || "") }));
 fs.mkdirSync(path.join(DIST, "presave"), { recursive: true });
 fs.writeFileSync(path.join(DIST, "presave", "index.html"), render(read(path.join(SRC, "presave.html")), { ...common, ROOT: "../", NAV: nav("presave/", "../") }));
 const postTpl = read(path.join(SRC, "post.html"));
