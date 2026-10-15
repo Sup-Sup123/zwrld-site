@@ -11,5 +11,5 @@
     "soundcloud_url": "https://soundcloud.com/zwrlddd/blue-eyes",
     "mp3_url": "https://zwrld-blue-eyes.sites.tab.bot/ZWrld-Blue-Eyes.mp3"
   },
-  "contact_endpoint": "https://zwrld-contact.PLACEHOLDER.workers.dev"
+  "contact_endpoint": "https://zwrld-contact.zwrld.workers.dev"
 }
