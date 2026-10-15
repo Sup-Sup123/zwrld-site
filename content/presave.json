@@ -1,9 +1,27 @@
 {
-  "_how_to_use": "When the next song is submitted with a release date, paste its pre-save link (from your distributor, or a free tool like Feature.fm / Linkfire / Hypeddit) into presave_url. The page then shows a big 'Pre-save' button at the top. Leave it empty between releases.",
+  "_how_to_use": "Each entry in releases shows as a card on /presave/ with its cover, date and a Pre-save button. presave_url empty = no button (the card still shows). release_date empty = 'Coming soon'. Put the newest release first. The old single presave_url field still works as a fallback card.",
+  "releases": [
+    {
+      "title": "I Still Miss You",
+      "cover": "assets/i-still-miss-you-cover.jpg",
+      "release_date": "2026-10-30",
+      "blurb": "The next single.",
+      "presave_url": "https://ffm.to/zwrld-i-still-miss-you",
+      "presave_label": "Pre-save I Still Miss You"
+    },
+    {
+      "title": "Blue Eyes",
+      "cover": "assets/blue-eyes-cover.jpg",
+      "release_date": "",
+      "blurb": "A slow country tribute to my dad. Hitting Spotify and every other store any day now.",
+      "presave_url": "https://ffm.to/zwrld-blue-eyes",
+      "presave_label": "Pre-save Blue Eyes"
+    }
+  ],
   "presave_url": "",
   "presave_label": "Pre-save the new song",
-  "headline": "New music is coming",
-  "intro": "Be the first to hear the next ZWrld song. Follow on Spotify and drop your email, and you'll know the day it lands.",
+  "headline": "Two new songs are coming",
+  "intro": "Pre-save and they land in your library the moment they drop. Follow on Spotify and leave your email so you never miss one.",
   "spotify_artist_url": "https://open.spotify.com/artist/3NOvBcSzOHUpAqjqtWXLzQ",
   "subscribe_endpoint": "https://zwrld-contact.zwrld.workers.dev/subscribe"
 }
