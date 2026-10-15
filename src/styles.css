@@ -164,3 +164,17 @@ h2{margin:.4rem 0 .25rem;font-family:var(--display);font-weight:700;font-size:cl
 .release-card .btn-big{width:100%;max-width:320px;margin:0 auto}
 .release-card .small{margin:.7rem 0 0}
 @media (min-width:560px){.release-card{grid-template-columns:200px 1fr;text-align:left;align-items:center}.release-cover{width:200px;margin:0}.release-card .release-blurb{margin-left:0}.release-card .btn-big{margin:0}}
+
+/* ---------- merch ---------- */
+.main-wide{max-width:1040px}
+.merch-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:.9rem;margin:1.6rem 0 1.4rem;text-align:left}
+.merch-card{display:flex;flex-direction:column;background:linear-gradient(180deg,var(--bg3),var(--bg2));border:1px solid var(--line);border-radius:var(--radius);overflow:hidden;box-shadow:0 10px 40px rgba(0,0,0,.35)}
+.merch-img{width:100%;height:auto;aspect-ratio:1/1;object-fit:cover;background:#000;border-bottom:1px solid var(--line)}
+.merch-body{display:flex;flex-direction:column;gap:.3rem;padding:.85rem .9rem 1rem;flex:1}
+.merch-name{margin:0;font-family:var(--display);font-weight:600;font-size:1.05rem;line-height:1.25;color:var(--ink)}
+.merch-blurb{margin:0;color:var(--muted);font-size:.86rem;line-height:1.4}
+.merch-price{margin:.2rem 0 0;color:var(--gold);font-weight:600;font-size:1rem}
+.merch-card .btn{margin-top:auto;padding:.6rem 1rem;font-size:.95rem;min-height:44px;width:100%}
+.merch-all{margin-top:.6rem}
+@media (min-width:640px){.merch-grid{grid-template-columns:repeat(3,minmax(0,1fr));gap:1.1rem}.merch-name{font-size:1.15rem}}
+@media (min-width:900px){.merch-grid{grid-template-columns:repeat(4,minmax(0,1fr))}}
