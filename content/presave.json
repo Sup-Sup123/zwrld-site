@@ -1,0 +1,9 @@
+{
+  "_how_to_use": "When the next song is submitted with a release date, paste its pre-save link (from your distributor, or a free tool like Feature.fm / Linkfire / Hypeddit) into presave_url. The page then shows a big 'Pre-save' button at the top. Leave it empty between releases.",
+  "presave_url": "",
+  "presave_label": "Pre-save the new song",
+  "headline": "New music is coming",
+  "intro": "Be the first to hear the next ZWrld song. Follow on Spotify and drop your email, and you'll know the day it lands.",
+  "spotify_artist_url": "https://open.spotify.com/artist/3NOvBcSzOHUpAqjqtWXLzQ",
+  "subscribe_endpoint": "https://zwrld-contact.zwrld.workers.dev/subscribe"
+}
