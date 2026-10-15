@@ -1,0 +1,81 @@
+# ZWrld site admin (Decap CMS). Log in with GitHub; every save commits to the repo and Netlify rebuilds zwrld.org.
+backend:
+  name: github
+  repo: zwrlddd/zwrld-site
+  branch: main
+  commit_messages:
+    create: "Add {{collection}} “{{slug}}”"
+    update: "Update {{collection}} “{{slug}}”"
+    delete: "Delete {{collection}} “{{slug}}”"
+    uploadMedia: "Upload “{{path}}”"
+    deleteMedia: "Delete “{{path}}”"
+
+site_url: https://zwrld.org
+display_url: https://zwrld.org
+logo_url: https://zwrld.org/og.jpg
+
+media_folder: "src/assets/uploads"
+public_folder: "/assets/uploads"
+
+collections:
+  - name: "blog"
+    label: "Blog posts"
+    label_singular: "Blog post"
+    folder: "content/blog"
+    create: true
+    slug: "{{year}}-{{month}}-{{day}}-{{slug}}"
+    summary: "{{title}} — {{date}}"
+    sort_by: ["date"]
+    fields:
+      - { label: "Title", name: "title", widget: "string" }
+      - { label: "Date", name: "date", widget: "datetime", format: "YYYY-MM-DD", date_format: "YYYY-MM-DD", time_format: false }
+      - { label: "Short summary (shows in the post list)", name: "summary", widget: "string", required: false }
+      - { label: "Post", name: "body", widget: "markdown" }
+
+  - name: "pages"
+    label: "Site content"
+    files:
+      - name: "tour"
+        label: "Tour dates"
+        file: "content/tour.json"
+        fields:
+          - { label: "Message when there are no upcoming shows", name: "empty_message", widget: "string", default: "New dates coming soon." }
+          - label: "Shows"
+            name: "shows"
+            widget: "list"
+            summary: "{{fields.date}} — {{fields.venue}}, {{fields.city}}"
+            fields:
+              - { label: "Date", name: "date", widget: "datetime", format: "YYYY-MM-DD", date_format: "YYYY-MM-DD", time_format: false }
+              - { label: "Venue", name: "venue", widget: "string" }
+              - { label: "City, State", name: "city", widget: "string" }
+              - { label: "Tickets link", name: "tickets", widget: "string", required: false }
+      - name: "socials"
+        label: "Social links"
+        file: "content/socials.json"
+        fields:
+          - { label: "SoundCloud", name: "soundcloud", widget: "string", required: false }
+          - { label: "YouTube", name: "youtube", widget: "string", required: false }
+          - { label: "Facebook", name: "facebook", widget: "string", required: false }
+          - { label: "X", name: "x", widget: "string", required: false }
+          - { label: "Snapchat", name: "snapchat", widget: "string", required: false }
+          - { label: "Instagram (leave blank to hide)", name: "instagram", widget: "string", required: false }
+          - { label: "TikTok (leave blank to hide)", name: "tiktok", widget: "string", required: false }
+          - { label: "Spotify (leave blank to hide)", name: "spotify", widget: "string", required: false }
+      - name: "site"
+        label: "About & latest release"
+        file: "content/site.json"
+        fields:
+          - { label: "Tagline (under the name)", name: "tagline", widget: "string" }
+          - { label: "One-line about (home page)", name: "about_short", widget: "string" }
+          - { label: "Bio (About page)", name: "about_bio", widget: "markdown" }
+          - { label: "Booking / contact email", name: "booking_email", widget: "string" }
+          - label: "Latest release"
+            name: "latest_release"
+            widget: "object"
+            fields:
+              - { label: "Title", name: "title", widget: "string" }
+              - { label: "Type", name: "type", widget: "select", options: ["Single", "EP", "Album"], default: "Single" }
+              - { label: "Release date", name: "date", widget: "datetime", format: "YYYY-MM-DD", date_format: "YYYY-MM-DD", time_format: false }
+              - { label: "One-line description", name: "blurb", widget: "string" }
+              - { label: "SoundCloud track link", name: "soundcloud_url", widget: "string" }
+              - { label: "MP3 link (for the on-page player)", name: "mp3_url", widget: "string", required: false }
