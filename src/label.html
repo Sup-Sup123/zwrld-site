@@ -1,0 +1,121 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#140d0a">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="ZWrld">
+<meta property="og:image" content="https://zwrld.org/og.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="1200">
+<meta property="og:image:alt" content="{{LABEL_NAME}}">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://zwrld.org/og.jpg">
+<link rel="icon" href="{{ROOT}}assets/blue-eyes-cover.jpg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,600;0,700;1,600&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="{{ROOT}}styles.css">
+<title>{{LABEL_NAME}} &middot; Independent label from Colorado</title>
+<meta name="description" content="{{LABEL_DESC}}">
+<meta property="og:title" content="{{LABEL_NAME}}">
+<meta property="og:description" content="{{LABEL_DESC}}">
+<meta property="og:url" content="https://zwrld.org/label/">
+<link rel="canonical" href="https://zwrld.org/label/">
+<meta name="twitter:title" content="{{LABEL_NAME}}">
+<meta name="twitter:description" content="{{LABEL_DESC}}">
+</head>
+<body>
+<header class="site-header">
+  <div class="bar">
+    <a class="wordmark" href="{{ROOT}}">ZWrld</a>
+{{NAV}}
+  </div>
+</header>
+<main>
+  <section class="section section-first label-hero" aria-labelledby="label-h">
+    <p class="kicker">{{LABEL_TAGLINE}}</p>
+    <h2 id="label-h">{{LABEL_NAME}}</h2>
+    <p class="blurb">{{LABEL_ABOUT}}</p>
+    <div class="actions">
+      <a class="btn btn-primary btn-big" href="#submit">Submit your music</a>
+    </div>
+  </section>
+
+  <section class="section" aria-labelledby="roster-h">
+    <p class="kicker">Roster</p>
+    <h2 id="roster-h">Our artists</h2>
+{{LABEL_ROSTER}}
+  </section>
+
+  <section class="section" id="submit" aria-labelledby="submit-h">
+    <p class="kicker">Artists</p>
+    <h2 id="submit-h">{{LABEL_SUBMIT_HEADLINE}}</h2>
+    <p class="blurb">{{LABEL_SUBMIT_INTRO}}</p>
+{{LABEL_STEPS}}
+    <form class="form" id="submit-form" method="POST" action="{{LABEL_ENDPOINT}}" novalidate>
+      <input type="hidden" name="redirect" value="https://zwrld.org/thanks.html">
+      <p class="hp" aria-hidden="true"><label>Leave this field empty: <input name="website" tabindex="-1" autocomplete="off"></label></p>
+      <label for="s-name">Your name</label>
+      <input id="s-name" name="name" type="text" autocomplete="name" maxlength="120" required>
+      <label for="s-email">Your email</label>
+      <input id="s-email" name="email" type="email" autocomplete="email" maxlength="200" required>
+      <label for="s-artist">Artist name</label>
+      <input id="s-artist" name="artist_name" type="text" maxlength="120" required>
+      <label for="s-genre">Genre</label>
+      <select id="s-genre" name="genre" required>
+        <option value="" disabled selected>Choose one</option>
+{{LABEL_GENRES}}
+      </select>
+      <label for="s-links">Link to your music</label>
+      <textarea id="s-links" name="links" rows="3" maxlength="1500" placeholder="https://soundcloud.com/… (SoundCloud, YouTube, Google Drive or Dropbox)" required></textarea>
+      <label for="s-socials">Your socials <span class="optional">(optional)</span></label>
+      <input id="s-socials" name="socials" type="text" maxlength="1000" placeholder="Instagram, TikTok, YouTube…">
+      <label for="s-message">A short message <span class="optional">(optional)</span></label>
+      <textarea id="s-message" name="message" rows="4" maxlength="2000" placeholder="Tell us about the song and about you."></textarea>
+      <label class="check" for="s-rights"><input id="s-rights" name="rights" type="checkbox" value="yes" required> <span>I wrote and recorded this music, or I own all the rights to it, and I'm allowed to send it.</span></label>
+      <p class="form-note" id="submit-note" role="status" aria-live="polite" hidden></p>
+      <button class="btn btn-primary" id="submit-send" type="submit">Send my music</button>
+    </form>
+    <p class="small">Questions? Email <a href="mailto:{{BOOKING_EMAIL}}">{{BOOKING_EMAIL}}</a></p>
+  </section>
+</main>
+<footer class="footer">
+  <div class="footer-inner">
+    <a class="wordmark small-mark" href="{{ROOT}}">ZWrld</a>
+    <nav class="footer-nav" aria-label="Footer"><a href="{{ROOT}}">Home</a><a href="{{ROOT}}about.html">About</a><a href="{{ROOT}}presave/">Pre-save</a><a href="{{ROOT}}merch/">Merch</a><a href="{{ROOT}}label/">Label</a><a href="{{ROOT}}newsletter/">Newsletter</a><a href="{{ROOT}}contact.html">Contact</a></nav>
+    <p class="copy">&copy; 2026 ZWrld &middot; <a href="mailto:{{BOOKING_EMAIL}}">{{BOOKING_EMAIL}}</a></p>
+  </div>
+</footer>
+<script>
+  (function () {
+    var form = document.getElementById("submit-form"), note = document.getElementById("submit-note"), btn = document.getElementById("submit-send");
+    if (!form || !window.fetch) return;
+    form.querySelector('[name="redirect"]').value = new URL("../thanks.html", location.href).href;
+    var say = function (msg, kind) { note.textContent = msg; note.className = "form-note " + kind; note.hidden = false; };
+    form.addEventListener("submit", function (e) {
+      e.preventDefault();
+      var missing = ["name", "email", "artist_name", "genre", "links"].filter(function (k) { return !form.elements[k].value.trim(); });
+      if (missing.length) { say("Please fill in your name, email, artist name, genre and a link to your music.", "is-error"); form.elements[missing[0]].focus(); return; }
+      if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(form.elements.email.value.trim())) { say("That email address doesn\u2019t look right.", "is-error"); form.elements.email.focus(); return; }
+      if (!/https?:\/\/\S+/i.test(form.elements.links.value)) { say("Please paste a full link to your track, starting with https://", "is-error"); form.elements.links.focus(); return; }
+      if (!form.elements.rights.checked) { say("Please confirm you own the rights to the music you\u2019re sending.", "is-error"); form.elements.rights.focus(); return; }
+      btn.disabled = true; btn.textContent = "Sending\u2026"; note.hidden = true;
+      var data = new FormData(form); data.delete("redirect");
+      fetch(form.action, { method: "POST", body: data, headers: { "Accept": "application/json" } })
+        .then(function (r) { return r.json().catch(function () { return {}; }).then(function (j) { return { ok: r.ok && j.ok !== false, j: j }; }); })
+        .then(function (res) {
+          if (!res.ok) { var err = new Error("send failed"); err.msg = res.j && res.j.error; throw err; }
+          form.reset(); btn.disabled = false; btn.textContent = "Send my music";
+          say("Got it, thank you! We listen to every submission and will email you if it\u2019s a fit.", "is-ok");
+        })
+        .catch(function (err) {
+          btn.disabled = false; btn.textContent = "Send my music";
+          say((err && err.msg ? err.msg + ". " : "Something went wrong and it didn\u2019t send. ") + "You can also email {{BOOKING_EMAIL}} directly.", "is-error");
+        });
+    });
+  })();
+</script>
+</body>
+</html>

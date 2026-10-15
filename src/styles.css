@@ -178,3 +178,17 @@ h2{margin:.4rem 0 .25rem;font-family:var(--display);font-weight:700;font-size:cl
 .merch-all{margin-top:.6rem}
 @media (min-width:640px){.merch-grid{grid-template-columns:repeat(3,minmax(0,1fr));gap:1.1rem}.merch-name{font-size:1.15rem}}
 @media (min-width:900px){.merch-grid{grid-template-columns:repeat(4,minmax(0,1fr))}}
+
+/* ---------- label */
+.label-hero h2 { font-size:clamp(2.2rem,8vw,3.4rem) }
+.roster-grid { display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,300px));gap:1rem;justify-content:center;margin-top:1.4rem }
+.roster-card { border:1px solid var(--line-strong);border-radius:var(--radius);background:linear-gradient(180deg,var(--bg3),var(--bg2));overflow:hidden;box-shadow:0 10px 40px rgba(0,0,0,.35);text-align:center }
+.roster-img { display:block;width:100%;height:auto;aspect-ratio:1/1;object-fit:cover }
+.roster-body { padding:1rem 1rem 1.2rem }
+.roster-body h3 { margin:0;font-family:var(--display);font-size:1.6rem }
+.roster-genre { margin:.3rem 0 .9rem;color:var(--muted);font-size:.9rem;letter-spacing:.04em }
+.roster-body .btn { width:100%;padding:.6rem 1rem;min-height:44px;font-size:.95rem }
+.label-steps { text-align:left;max-width:480px;margin:0 auto 1rem;padding-left:1.3rem;color:var(--muted);line-height:1.55 }
+.label-steps li { margin:.35rem 0 }
+.form label.check { display:flex;gap:.7rem;align-items:flex-start;text-transform:none;letter-spacing:0;font-size:.95rem;color:var(--ink);line-height:1.45;margin-top:1.3rem;cursor:pointer }
+.form label.check input { width:22px;height:22px;min-height:0;flex:none;margin:.1rem 0 0;padding:0;accent-color:var(--sun) }
