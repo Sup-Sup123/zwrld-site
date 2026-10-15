@@ -83,5 +83,12 @@
 <footer class="footer">
   <p>&copy; 2026 ZWrld</p>
 </footer>
+<script src="https://identity.netlify.com/v1/netlify-identity-widget.js" defer></script>
+<script>
+  // Admin sign-in: invite/recovery links from Netlify Identity land on the home page; send them to /admin.
+  if (/invite_token|recovery_token|confirmation_token|email_change_token/.test(location.hash)) {
+    location.replace("/admin/" + location.hash);
+  }
+</script>
 </body>
 </html>
