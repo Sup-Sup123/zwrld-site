@@ -1,0 +1,13 @@
+{
+  "name": "zwrld-site",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "zwrld.org — ZWrld's artist site. Content lives in /content (edited at /admin); build.mjs renders /src into /dist.",
+  "scripts": {
+    "build": "node build.mjs"
+  },
+  "dependencies": {
+    "marked": "^15.0.0"
+  }
+}

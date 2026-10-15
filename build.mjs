@@ -1,0 +1,72 @@
+// Builds zwrld.org: renders the templates in /src with the content in /content into /dist.
+// Zach edits /content through the admin at /admin (Decap CMS); every save commits to GitHub and Netlify rebuilds.
+import fs from "node:fs";
+import path from "node:path";
+import { marked } from "marked";
+
+const ROOT = path.dirname(new URL(import.meta.url).pathname);
+const SRC = path.join(ROOT, "src"), CONTENT = path.join(ROOT, "content"), DIST = path.join(ROOT, "dist");
+const read = (p) => fs.readFileSync(p, "utf8");
+const json = (p) => JSON.parse(read(p));
+const esc = (s) => String(s ?? "").replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;");
+const fmtDate = (iso) => new Date(iso + "T12:00:00Z").toLocaleDateString("en-US", { year: "numeric", month: "long", day: "numeric", timeZone: "UTC" });
+const slugify = (s) => String(s).toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-+|-+$/g, "");
+
+const site = json(path.join(CONTENT, "site.json"));
+const socials = json(path.join(CONTENT, "socials.json"));
+const tour = json(path.join(CONTENT, "tour.json"));
+const rel = site.latest_release || {};
+
+// ---- nav
+const NAV_ITEMS = [["/", "Home"], ["/about.html", "About"], ["/blog/", "Blog"], ["/contact.html", "Contact"]];
+const nav = (current) => `  <nav class="nav" aria-label="Pages">\n` + NAV_ITEMS.map(([href, label]) => `    <a href="${href}"${href === current ? ' aria-current="page"' : ""}>${label}</a>`).join("\n") + `\n  </nav>`;
+
+// ---- socials (only the ones with a URL show)
+const SOCIAL_ORDER = [["soundcloud", "SoundCloud"], ["youtube", "YouTube"], ["facebook", "Facebook"], ["x", "X"], ["snapchat", "Snapchat"], ["instagram", "Instagram"], ["tiktok", "TikTok"], ["spotify", "Spotify"]];
+const socialsHtml = `    <ul class="socials">\n` + SOCIAL_ORDER.filter(([k]) => socials[k] && String(socials[k]).trim()).map(([k, label]) => `      <li><a href="${esc(socials[k].trim())}" target="_blank" rel="noopener">${label}</a></li>`).join("\n") + `\n    </ul>`;
+
+// ---- tour (future shows, sorted; empty message otherwise)
+const today = new Date(); today.setUTCHours(0, 0, 0, 0);
+const shows = (tour.shows || []).filter(s => s && s.date && new Date(s.date + "T23:59:59Z") >= today).sort((a, b) => String(a.date).localeCompare(String(b.date)));
+const tourHtml = shows.length
+  ? `    <ul class="tour-list">\n` + shows.map(s => `      <li><span class="tour-date">${esc(new Date(s.date + "T12:00:00Z").toLocaleDateString("en-US", { weekday: "short", month: "short", day: "numeric", timeZone: "UTC" }))}</span><div class="tour-where">${esc(s.venue)}<span>${esc(s.city)}</span></div>${s.tickets ? `<a class="btn" href="${esc(s.tickets)}" target="_blank" rel="noopener">Tickets</a>` : ""}</li>`).join("\n") + `\n    </ul>`
+  : `    <p class="empty">${esc(tour.empty_message || "New dates coming soon.")}</p>`;
+
+// ---- blog
+const posts = fs.readdirSync(path.join(CONTENT, "blog")).filter(f => f.endsWith(".md")).map(f => {
+  const raw = read(path.join(CONTENT, "blog", f));
+  const m = raw.match(/^---\r?\n([\s\S]*?)\r?\n---\r?\n?([\s\S]*)$/);
+  const fm = {}; if (m) for (const line of m[1].split(/\r?\n/)) { const i = line.indexOf(":"); if (i > 0) fm[line.slice(0, i).trim()] = line.slice(i + 1).trim().replace(/^"(.*)"$/, "$1").replace(/^'(.*)'$/, "$1"); }
+  const body = m ? m[2] : raw;
+  const date = String(fm.date || "").slice(0, 10) || f.slice(0, 10);
+  const title = fm.title || f.replace(/^\d{4}-\d{2}-\d{2}-/, "").replace(/\.md$/, "");
+  const slug = fm.slug ? slugify(fm.slug) : slugify(f.replace(/\.md$/, "").replace(/^\d{4}-\d{2}-\d{2}-/, ""));
+  return { title, date, summary: fm.summary || "", slug, html: marked.parse(body) };
+}).filter(p => !/^(true|yes)$/i.test(String(p.draft))).sort((a, b) => b.date.localeCompare(a.date));
+
+// ---- common replacements
+const common = {
+  TAGLINE: esc(site.tagline), ABOUT_SHORT: esc(site.about_short), ABOUT_BIO: marked.parse(site.about_bio || ""), BOOKING_EMAIL: esc(site.booking_email),
+  REL_TITLE: esc(rel.title), REL_TYPE: esc(rel.type || "Single"), REL_TYPE_LOWER: esc(String(rel.type || "single").toLowerCase()), REL_DATE: esc(rel.date ? fmtDate(rel.date) : ""), REL_BLURB: esc(rel.blurb),
+  REL_SC: esc(rel.soundcloud_url), REL_SC_ENC: encodeURIComponent(rel.soundcloud_url || "").replace(/%2F/g, "/"), REL_MP3: esc(rel.mp3_url),
+  SOCIAL_SOUNDCLOUD: esc(socials.soundcloud || "https://soundcloud.com/zwrlddd"), SOCIALS: socialsHtml, TOUR: tourHtml,
+};
+const render = (tpl, vars) => tpl.replace(/\{\{([A-Z0-9_]+)\}\}/g, (_, k) => (k in vars ? vars[k] : ""));
+
+// ---- write dist
+fs.rmSync(DIST, { recursive: true, force: true }); fs.mkdirSync(DIST, { recursive: true });
+for (const [file, current] of [["index.html", "/"], ["about.html", "/about.html"], ["contact.html", "/contact.html"], ["thanks.html", "/contact.html"]]) {
+  fs.writeFileSync(path.join(DIST, file), render(read(path.join(SRC, file)), { ...common, NAV: nav(current) }));
+}
+const postsHtml = posts.length ? posts.map(p => `      <li><h3><a href="/blog/${p.slug}/">${esc(p.title)}</a></h3><p class="meta"><time datetime="${p.date}">${esc(fmtDate(p.date))}</time></p>${p.summary ? `<p>${esc(p.summary)}</p>` : ""}</li>`).join("\n") : `      <li><p class="empty">First post coming soon.</p></li>`;
+fs.mkdirSync(path.join(DIST, "blog"), { recursive: true });
+fs.writeFileSync(path.join(DIST, "blog", "index.html"), render(read(path.join(SRC, "blog.html")), { ...common, NAV: nav("/blog/"), POSTS: postsHtml }));
+const postTpl = read(path.join(SRC, "post.html"));
+for (const p of posts) {
+  fs.mkdirSync(path.join(DIST, "blog", p.slug), { recursive: true });
+  fs.writeFileSync(path.join(DIST, "blog", p.slug, "index.html"), render(postTpl, { ...common, NAV: nav("/blog/"), POST_TITLE: esc(p.title), POST_SUMMARY: esc(p.summary || `${p.title} — an update from ZWrld.`), POST_SLUG: p.slug, POST_DATE_ISO: p.date, POST_DATE: esc(fmtDate(p.date)), POST_BODY: p.html }));
+}
+for (const f of ["styles.css", "og.jpg"]) fs.copyFileSync(path.join(SRC, f), path.join(DIST, f));
+fs.cpSync(path.join(SRC, "assets"), path.join(DIST, "assets"), { recursive: true });
+fs.cpSync(path.join(ROOT, "admin"), path.join(DIST, "admin"), { recursive: true });
+console.log(`built ${4 + 1 + posts.length} pages into dist/ (${posts.length} blog post${posts.length === 1 ? "" : "s"}, ${shows.length} upcoming show${shows.length === 1 ? "" : "s"})`);
