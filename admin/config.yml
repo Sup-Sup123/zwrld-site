@@ -1,7 +1,7 @@
-# ZWrld site admin (Decap CMS). Log in with GitHub; every save commits to the repo and Netlify rebuilds zwrld.org.
+# ZWrld site admin (Decap CMS). Log in with your email + password (Netlify Identity);
+# every save commits to github.com/Sup-Sup123/zwrld-site through Netlify Git Gateway and Netlify rebuilds zwrld.org.
 backend:
-  name: github
-  repo: zwrlddd/zwrld-site
+  name: git-gateway
   branch: main
   commit_messages:
     create: "Add {{collection}} “{{slug}}”"
