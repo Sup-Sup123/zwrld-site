@@ -112,4 +112,16 @@ fs.writeFileSync(path.join(DIST, "admin", "index.html"), simplePage("Admin", `  
 for (const f of ["styles.css", "og.jpg"]) fs.copyFileSync(path.join(SRC, f), path.join(DIST, f));
 fs.cpSync(path.join(SRC, "assets"), path.join(DIST, "assets"), { recursive: true });
 fs.writeFileSync(path.join(DIST, ".nojekyll"), "");
-console.log(`built ${4 + 2 + posts.length} pages into dist/ (${posts.length} newsletter post${posts.length === 1 ? "" : "s"}, ${shows.length} upcoming show${shows.length === 1 ? "" : "s"})`);
+
+// ---- short links (content/redirects.json): /<slug>/ -> instant client-side redirect (GitHub Pages has no server redirects)
+const redirectsPath = path.join(CONTENT, "redirects.json");
+const redirects = fs.existsSync(redirectsPath) ? json(redirectsPath) : {};
+let redirectCount = 0;
+for (const [slug, target] of Object.entries(redirects)) {
+  if (slug.startsWith("_") || !/^https?:\/\//.test(String(target))) continue;
+  const t = esc(String(target).trim()); const dirp = path.join(DIST, slug);
+  fs.mkdirSync(dirp, { recursive: true });
+  fs.writeFileSync(path.join(dirp, "index.html"), `<!doctype html>\n<html lang="en">\n<head>\n<meta charset="utf-8">\n<meta name="viewport" content="width=device-width, initial-scale=1">\n<meta name="robots" content="noindex">\n<meta http-equiv="refresh" content="0; url=${t}">\n<link rel="canonical" href="${t}">\n<title>ZWrld</title>\n<style>body{margin:0;min-height:100vh;display:grid;place-items:center;background:#120b08;color:#f6ebdc;font-family:Inter,system-ui,sans-serif;text-align:center}a{color:#f2c27b}</style>\n<script>location.replace(${JSON.stringify(String(target).trim())});</script>\n</head>\n<body><p>Taking you there&hellip;<br><a href="${t}">Tap here if nothing happens</a></p></body>\n</html>\n`);
+  redirectCount++;
+}
+console.log(`built ${redirectCount} short links, ${4 + 2 + posts.length} pages into dist/ (${posts.length} newsletter post${posts.length === 1 ? "" : "s"}, ${shows.length} upcoming show${shows.length === 1 ? "" : "s"})`);
