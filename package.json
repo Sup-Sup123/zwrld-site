@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "private": true,
   "type": "module",
-  "description": "zwrld.org — ZWrld's artist site. Content lives in /content (edited at /admin); build.mjs renders /src into /dist.",
+  "description": "zwrld.org \u2014 ZWrld's artist site. Content lives in /content; build.mjs renders /src into /dist, published by GitHub Pages.",
   "scripts": {
     "build": "node build.mjs"
   },
