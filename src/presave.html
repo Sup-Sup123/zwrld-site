@@ -82,7 +82,7 @@
     var form = document.getElementById("presave-form"), note = document.getElementById("form-note"), btn = document.getElementById("form-send");
     if (!form || !window.fetch) return;
     // the thank-you page at the site root, whatever address the site is served from
-    form.querySelector('[name="redirect"]').value = new URL("../thanks.html", location.href).href;
+    form.querySelector('[name="redirect"]').value = new URL("../thanks.html?list=1", location.href).href;
     var say = function (msg, kind) { note.textContent = msg; note.className = "form-note " + kind; note.hidden = false; };
     form.addEventListener("submit", function (e) {
       e.preventDefault();
@@ -99,8 +99,10 @@
           say(res.j.already ? "You\u2019re already on the list. You\u2019ll hear the day new music drops." : "You\u2019re in. You\u2019ll get one email the day new music drops.", "is-ok");
         })
         .catch(function (err) {
+          // a server answer (bad email etc.) shows here; a network failure falls back to a plain form post, which lands on the thank-you page
+          if (!err || err.message === "Failed to fetch" || /NetworkError|Load failed/i.test(err.message)) { HTMLFormElement.prototype.submit.call(form); return; }
           btn.disabled = false; btn.textContent = "Count me in";
-          say((err && err.message && /email|address/i.test(err.message)) ? err.message : "Something went wrong and your email wasn\u2019t saved. Please try again, or email {{BOOKING_EMAIL}} directly.", "is-error");
+          say(/email|address/i.test(err.message) ? err.message : "Something went wrong and your email wasn\u2019t saved. Please try again, or email {{BOOKING_EMAIL}} directly.", "is-error");
         });
     });
   })();

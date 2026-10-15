@@ -42,6 +42,14 @@
     <a class="btn btn-primary" href="{{ROOT}}">Back to the music</a>
   </section>
 </main>
+<script>
+  // after the pre-save email signup (…/thanks.html?list=1) the same page says the right thing
+  if (/[?&]list=1/.test(location.search)) {
+    document.querySelector(".kicker").textContent = "Release day";
+    document.getElementById("thanks-h").textContent = "You\u2019re in";
+    document.querySelector(".blurb").textContent = "You\u2019ll get one email the day new music drops. Until then, Blue Eyes is waiting.";
+  }
+</script>
 <footer class="footer">
   <div class="footer-inner">
     <a class="wordmark small-mark" href="{{ROOT}}">ZWrld</a>
