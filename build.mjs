@@ -18,7 +18,7 @@ const tour = json(path.join(CONTENT, "tour.json"));
 const rel = site.latest_release || {};
 
 // ---- nav
-const NAV_ITEMS = [["/", "Home"], ["/about.html", "About"], ["/blog/", "Blog"], ["/contact.html", "Contact"]];
+const NAV_ITEMS = [["/", "Home"], ["/about.html", "About"], ["/newsletter/", "Newsletter"], ["/contact.html", "Contact"]];
 const nav = (current) => `  <nav class="nav" aria-label="Pages">\n` + NAV_ITEMS.map(([href, label]) => `    <a href="${href}"${href === current ? ' aria-current="page"' : ""}>${label}</a>`).join("\n") + `\n  </nav>`;
 
 // ---- socials (only the ones with a URL show)
@@ -58,15 +58,15 @@ fs.rmSync(DIST, { recursive: true, force: true }); fs.mkdirSync(DIST, { recursiv
 for (const [file, current] of [["index.html", "/"], ["about.html", "/about.html"], ["contact.html", "/contact.html"], ["thanks.html", "/contact.html"]]) {
   fs.writeFileSync(path.join(DIST, file), render(read(path.join(SRC, file)), { ...common, NAV: nav(current) }));
 }
-const postsHtml = posts.length ? posts.map(p => `      <li><h3><a href="/blog/${p.slug}/">${esc(p.title)}</a></h3><p class="meta"><time datetime="${p.date}">${esc(fmtDate(p.date))}</time></p>${p.summary ? `<p>${esc(p.summary)}</p>` : ""}</li>`).join("\n") : `      <li><p class="empty">First post coming soon.</p></li>`;
-fs.mkdirSync(path.join(DIST, "blog"), { recursive: true });
-fs.writeFileSync(path.join(DIST, "blog", "index.html"), render(read(path.join(SRC, "blog.html")), { ...common, NAV: nav("/blog/"), POSTS: postsHtml }));
+const postsHtml = posts.length ? posts.map(p => `      <li><h3><a href="/newsletter/${p.slug}/">${esc(p.title)}</a></h3><p class="meta"><time datetime="${p.date}">${esc(fmtDate(p.date))}</time></p>${p.summary ? `<p>${esc(p.summary)}</p>` : ""}</li>`).join("\n") : `      <li><p class="empty">First post coming soon.</p></li>`;
+fs.mkdirSync(path.join(DIST, "newsletter"), { recursive: true });
+fs.writeFileSync(path.join(DIST, "newsletter", "index.html"), render(read(path.join(SRC, "newsletter.html")), { ...common, NAV: nav("/newsletter/"), POSTS: postsHtml }));
 const postTpl = read(path.join(SRC, "post.html"));
 for (const p of posts) {
-  fs.mkdirSync(path.join(DIST, "blog", p.slug), { recursive: true });
-  fs.writeFileSync(path.join(DIST, "blog", p.slug, "index.html"), render(postTpl, { ...common, NAV: nav("/blog/"), POST_TITLE: esc(p.title), POST_SUMMARY: esc(p.summary || `${p.title} — an update from ZWrld.`), POST_SLUG: p.slug, POST_DATE_ISO: p.date, POST_DATE: esc(fmtDate(p.date)), POST_BODY: p.html }));
+  fs.mkdirSync(path.join(DIST, "newsletter", p.slug), { recursive: true });
+  fs.writeFileSync(path.join(DIST, "newsletter", p.slug, "index.html"), render(postTpl, { ...common, NAV: nav("/newsletter/"), POST_TITLE: esc(p.title), POST_SUMMARY: esc(p.summary || `${p.title} — an update from ZWrld.`), POST_SLUG: p.slug, POST_DATE_ISO: p.date, POST_DATE: esc(fmtDate(p.date)), POST_BODY: p.html }));
 }
 for (const f of ["styles.css", "og.jpg"]) fs.copyFileSync(path.join(SRC, f), path.join(DIST, f));
 fs.cpSync(path.join(SRC, "assets"), path.join(DIST, "assets"), { recursive: true });
 fs.cpSync(path.join(ROOT, "admin"), path.join(DIST, "admin"), { recursive: true });
-console.log(`built ${4 + 1 + posts.length} pages into dist/ (${posts.length} blog post${posts.length === 1 ? "" : "s"}, ${shows.length} upcoming show${shows.length === 1 ? "" : "s"})`);
+console.log(`built ${4 + 1 + posts.length} pages into dist/ (${posts.length} newsletter post${posts.length === 1 ? "" : "s"}, ${shows.length} upcoming show${shows.length === 1 ? "" : "s"})`);

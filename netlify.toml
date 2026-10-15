@@ -6,3 +6,13 @@
   for = "/admin/*"
   [headers.values]
     X-Robots-Tag = "noindex"
+
+[[redirects]]
+  from = "/blog"
+  to = "/newsletter/"
+  status = 301
+
+[[redirects]]
+  from = "/blog/*"
+  to = "/newsletter/:splat"
+  status = 301
