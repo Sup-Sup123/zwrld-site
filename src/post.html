@@ -12,11 +12,11 @@
 <meta property="og:image:alt" content="Blue Eyes single cover: a sunset photo">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:image" content="https://zwrld.org/og.jpg">
-<link rel="icon" href="assets/blue-eyes-cover.jpg">
+<link rel="icon" href="{{ROOT}}assets/blue-eyes-cover.jpg">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,600;0,700;1,600&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="styles.css">
+<link rel="stylesheet" href="{{ROOT}}styles.css">
 <title>{{POST_TITLE}} &middot; ZWrld</title>
 <meta name="description" content="{{POST_SUMMARY}}">
 <meta property="og:title" content="{{POST_TITLE}} &middot; ZWrld">
@@ -29,7 +29,7 @@
 <body>
 <header class="site-header">
   <div class="bar">
-    <a class="wordmark" href="/">ZWrld</a>
+    <a class="wordmark" href="{{ROOT}}">ZWrld</a>
 {{NAV}}
   </div>
 </header>
@@ -39,13 +39,13 @@
     <h2 id="post-h">{{POST_TITLE}}</h2>
     <p class="meta"><time datetime="{{POST_DATE_ISO}}">{{POST_DATE}}</time></p>
     <div class="prose">{{POST_BODY}}</div>
-    <p class="small"><a href="/newsletter/">&larr; All posts</a></p>
+    <p class="small"><a href="{{ROOT}}newsletter/">&larr; All posts</a></p>
   </article>
 </main>
 <footer class="footer">
   <div class="footer-inner">
-    <a class="wordmark small-mark" href="/">ZWrld</a>
-    <nav class="footer-nav" aria-label="Footer"><a href="/">Home</a><a href="/about.html">About</a><a href="/newsletter/">Newsletter</a><a href="/contact.html">Contact</a></nav>
+    <a class="wordmark small-mark" href="{{ROOT}}">ZWrld</a>
+    <nav class="footer-nav" aria-label="Footer"><a href="{{ROOT}}">Home</a><a href="{{ROOT}}about.html">About</a><a href="{{ROOT}}newsletter/">Newsletter</a><a href="{{ROOT}}contact.html">Contact</a></nav>
     <p class="copy">&copy; 2026 ZWrld &middot; <a href="mailto:{{BOOKING_EMAIL}}">{{BOOKING_EMAIL}}</a></p>
   </div>
 </footer>

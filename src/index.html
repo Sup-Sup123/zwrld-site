@@ -20,25 +20,25 @@
 <meta name="twitter:title" content="ZWrld &middot; Blue Eyes out now">
 <meta name="twitter:description" content="Country songwriter from Northglenn, CO, raised in southern Iowa.">
 <meta name="twitter:image" content="https://zwrld.org/og.jpg">
-<link rel="icon" href="assets/blue-eyes-cover.jpg">
+<link rel="icon" href="{{ROOT}}assets/blue-eyes-cover.jpg">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,600;0,700;1,600&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="styles.css">
+<link rel="stylesheet" href="{{ROOT}}styles.css">
 </head>
 <body>
 <a class="skip" href="#music">Skip to music</a>
 
 <header class="site-header">
   <div class="bar">
-    <a class="wordmark" href="/">ZWrld</a>
+    <a class="wordmark" href="{{ROOT}}">ZWrld</a>
 {{NAV}}
   </div>
 </header>
 
 <section class="hero" aria-label="Intro">
   <div class="hero-art">
-    <img class="cover" src="assets/blue-eyes-cover.jpg" width="1200" height="1200" alt="Blue Eyes single cover: a sunset photo">
+    <img class="cover" src="{{ROOT}}assets/blue-eyes-cover.jpg" width="1200" height="1200" alt="Blue Eyes single cover: a sunset photo">
   </div>
   <div class="hero-copy">
     <p class="eyebrow">New {{REL_TYPE_LOWER}}</p>
@@ -59,7 +59,7 @@
     <p class="meta">{{REL_TYPE}} &middot; {{REL_DATE}}</p>
     <div class="card release">
       <div class="release-head">
-        <img class="thumb" src="assets/blue-eyes-cover.jpg" width="1200" height="1200" alt="">
+        <img class="thumb" src="{{ROOT}}assets/blue-eyes-cover.jpg" width="1200" height="1200" alt="">
         <div>
           <p class="release-title">{{REL_TITLE}}</p>
           <p class="release-blurb">{{REL_BLURB}}</p>
@@ -92,7 +92,7 @@
     <p class="kicker">About</p>
     <h2 id="about-h" class="visually-hidden">About ZWrld</h2>
     <p class="about">{{ABOUT_SHORT}}</p>
-    <p class="small"><a href="/about.html">Read more about ZWrld &rarr;</a></p>
+    <p class="small"><a href="{{ROOT}}about.html">Read more about ZWrld &rarr;</a></p>
   </section>
 
   <section id="contact" class="section" aria-labelledby="contact-h">
@@ -100,23 +100,16 @@
     <h2 id="contact-h">Find ZWrld</h2>
 {{SOCIALS}}
     <p class="contact">Email: <a href="mailto:{{BOOKING_EMAIL}}">{{BOOKING_EMAIL}}</a></p>
-    <div class="actions"><a class="btn btn-outline" href="/contact.html">Send a message</a></div>
+    <div class="actions"><a class="btn btn-outline" href="{{ROOT}}contact.html">Send a message</a></div>
   </section>
 </main>
 
 <footer class="footer">
   <div class="footer-inner">
-    <a class="wordmark small-mark" href="/">ZWrld</a>
-    <nav class="footer-nav" aria-label="Footer"><a href="/">Home</a><a href="/about.html">About</a><a href="/newsletter/">Newsletter</a><a href="/contact.html">Contact</a></nav>
+    <a class="wordmark small-mark" href="{{ROOT}}">ZWrld</a>
+    <nav class="footer-nav" aria-label="Footer"><a href="{{ROOT}}">Home</a><a href="{{ROOT}}about.html">About</a><a href="{{ROOT}}newsletter/">Newsletter</a><a href="{{ROOT}}contact.html">Contact</a></nav>
     <p class="copy">&copy; 2026 ZWrld &middot; <a href="mailto:{{BOOKING_EMAIL}}">{{BOOKING_EMAIL}}</a></p>
   </div>
 </footer>
-<script src="https://identity.netlify.com/v1/netlify-identity-widget.js" defer></script>
-<script>
-  // Admin sign-in: invite/recovery links from Netlify Identity land on the home page; send them to /admin.
-  if (/invite_token|recovery_token|confirmation_token|email_change_token/.test(location.hash)) {
-    location.replace("/admin/" + location.hash);
-  }
-</script>
 </body>
 </html>

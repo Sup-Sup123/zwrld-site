@@ -12,11 +12,11 @@
 <meta property="og:image:alt" content="Blue Eyes single cover: a sunset photo">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:image" content="https://zwrld.org/og.jpg">
-<link rel="icon" href="assets/blue-eyes-cover.jpg">
+<link rel="icon" href="{{ROOT}}assets/blue-eyes-cover.jpg">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,600;0,700;1,600&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="styles.css">
+<link rel="stylesheet" href="{{ROOT}}styles.css">
 <title>Contact ZWrld &middot; Booking, press &amp; radio</title>
 <meta name="description" content="Get in touch with ZWrld for booking, press, radio, or fan mail.">
 <meta property="og:title" content="Contact ZWrld &middot; Booking, press &amp; radio">
@@ -29,7 +29,7 @@
 <body>
 <header class="site-header">
   <div class="bar">
-    <a class="wordmark" href="/">ZWrld</a>
+    <a class="wordmark" href="{{ROOT}}">ZWrld</a>
 {{NAV}}
   </div>
 </header>
@@ -38,13 +38,13 @@
     <p class="kicker">Contact</p>
     <h2 id="contact-h">Get in touch</h2>
     <p class="blurb">Booking, press, radio, or just a hello. Every message is read.</p>
-    <form class="form" name="contact" method="POST" action="/thanks.html" data-netlify="true" data-netlify-honeypot="bot-field" netlify>
-      <input type="hidden" name="form-name" value="contact">
-      <p class="hp"><label>Don&rsquo;t fill this out if you&rsquo;re human: <input name="bot-field"></label></p>
+    <form class="form" id="contact-form" method="POST" action="{{CONTACT_ENDPOINT}}" novalidate>
+      <input type="hidden" name="redirect" value="https://zwrld.org/thanks.html">
+      <p class="hp" aria-hidden="true"><label>Leave this field empty: <input name="website" tabindex="-1" autocomplete="off"></label></p>
       <label for="f-name">Your name</label>
-      <input id="f-name" name="name" type="text" autocomplete="name" required>
+      <input id="f-name" name="name" type="text" autocomplete="name" maxlength="120" required>
       <label for="f-email">Your email</label>
-      <input id="f-email" name="email" type="email" autocomplete="email" required>
+      <input id="f-email" name="email" type="email" autocomplete="email" maxlength="200" required>
       <label for="f-reason">Reason</label>
       <select id="f-reason" name="reason" required>
         <option value="" disabled selected>Choose one</option>
@@ -55,18 +55,46 @@
         <option>Other</option>
       </select>
       <label for="f-message">Message</label>
-      <textarea id="f-message" name="message" rows="6" required></textarea>
-      <button class="btn btn-primary" type="submit">Send message</button>
+      <textarea id="f-message" name="message" rows="6" maxlength="5000" required></textarea>
+      <p class="form-note" id="form-note" role="status" aria-live="polite" hidden></p>
+      <button class="btn btn-primary" id="form-send" type="submit">Send message</button>
     </form>
     <p class="small">Or email directly: <a href="mailto:{{BOOKING_EMAIL}}">{{BOOKING_EMAIL}}</a></p>
   </section>
 </main>
 <footer class="footer">
   <div class="footer-inner">
-    <a class="wordmark small-mark" href="/">ZWrld</a>
-    <nav class="footer-nav" aria-label="Footer"><a href="/">Home</a><a href="/about.html">About</a><a href="/newsletter/">Newsletter</a><a href="/contact.html">Contact</a></nav>
+    <a class="wordmark small-mark" href="{{ROOT}}">ZWrld</a>
+    <nav class="footer-nav" aria-label="Footer"><a href="{{ROOT}}">Home</a><a href="{{ROOT}}about.html">About</a><a href="{{ROOT}}newsletter/">Newsletter</a><a href="{{ROOT}}contact.html">Contact</a></nav>
     <p class="copy">&copy; 2026 ZWrld &middot; <a href="mailto:{{BOOKING_EMAIL}}">{{BOOKING_EMAIL}}</a></p>
   </div>
 </footer>
+<script>
+  (function () {
+    var form = document.getElementById("contact-form"), note = document.getElementById("form-note"), btn = document.getElementById("form-send");
+    if (!form || !window.fetch) return;
+    // the thank-you page next to this one, whatever address the site is served from
+    form.querySelector('[name="redirect"]').value = new URL("thanks.html", location.href).href;
+    var say = function (msg, kind) { note.textContent = msg; note.className = "form-note " + kind; note.hidden = false; };
+    form.addEventListener("submit", function (e) {
+      e.preventDefault();
+      var missing = ["name", "email", "reason", "message"].filter(function (k) { return !form.elements[k].value.trim(); });
+      if (missing.length) { say("Please fill in your name, email, a reason and a message.", "is-error"); form.elements[missing[0]].focus(); return; }
+      if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(form.elements.email.value.trim())) { say("That email address doesn\u2019t look right.", "is-error"); form.elements.email.focus(); return; }
+      btn.disabled = true; btn.textContent = "Sending\u2026"; note.hidden = true;
+      var data = new FormData(form); data.delete("redirect");
+      fetch(form.action, { method: "POST", body: data, headers: { "Accept": "application/json" } })
+        .then(function (r) { return r.json().catch(function () { return {}; }).then(function (j) { return { ok: r.ok && j.ok !== false, j: j }; }); })
+        .then(function (res) {
+          if (res.ok) { location.href = form.querySelector('[name="redirect"]').value; return; }
+          throw new Error((res.j && res.j.error) || "send failed");
+        })
+        .catch(function () {
+          btn.disabled = false; btn.textContent = "Send message";
+          say("Something went wrong and the message didn\u2019t send. Please try again, or email {{BOOKING_EMAIL}} directly.", "is-error");
+        });
+    });
+  })();
+</script>
 </body>
 </html>
