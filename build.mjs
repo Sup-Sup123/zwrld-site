@@ -16,15 +16,21 @@ const slugify = (s) => String(s).toLowerCase().replace(/[^a-z0-9]+/g, "-").repla
 const site = json(path.join(CONTENT, "site.json"));
 const socials = json(path.join(CONTENT, "socials.json"));
 const tour = json(path.join(CONTENT, "tour.json"));
+const presave = fs.existsSync(path.join(CONTENT, "presave.json")) ? json(path.join(CONTENT, "presave.json")) : {};
 const rel = site.latest_release || {};
 
 // ---- nav
-const NAV_ITEMS = [["", "Home"], ["about.html", "About"], ["newsletter/", "Newsletter"], ["contact.html", "Contact"]];
+const NAV_ITEMS = [["", "Home"], ["about.html", "About"], ["presave/", "Pre-save"], ["newsletter/", "Newsletter"], ["contact.html", "Contact"]];
 const nav = (current, root) => `  <nav class="nav" aria-label="Pages">\n` + NAV_ITEMS.map(([href, label]) => `    <a href="${root}${href}"${href === current ? ' aria-current="page"' : ""}>${label}</a>`).join("\n") + `\n  </nav>`;
 
 // ---- socials (only the ones with a URL show)
 const SOCIAL_ORDER = [["soundcloud", "SoundCloud"], ["youtube", "YouTube"], ["facebook", "Facebook"], ["x", "X"], ["snapchat", "Snapchat"], ["instagram", "Instagram"], ["tiktok", "TikTok"], ["spotify", "Spotify"]];
 const socialsHtml = `    <ul class="socials">\n` + SOCIAL_ORDER.filter(([k]) => socials[k] && String(socials[k]).trim()).map(([k, label]) => `      <li><a href="${esc(socials[k].trim())}" target="_blank" rel="noopener">${label}</a></li>`).join("\n") + `\n    </ul>`;
+
+// ---- pre-save page: the other platforms as small links (Spotify has its own big button there)
+const platformsHtml = `    <ul class="socials socials-small">\n` + SOCIAL_ORDER.filter(([k]) => k !== "spotify" && socials[k] && String(socials[k]).trim()).map(([k, label]) => `      <li><a href="${esc(socials[k].trim())}" target="_blank" rel="noopener">${label}</a></li>`).join("\n") + `\n    </ul>`;
+const presaveUrl = String(presave.presave_url || "").trim();
+const presaveButton = presaveUrl ? `    <div class="presave-live">\n      <p class="kicker">Out soon</p>\n      <a class="btn btn-primary btn-big" href="${esc(presaveUrl)}" target="_blank" rel="noopener">${esc(presave.presave_label || "Pre-save the new song")}</a>\n      <p class="small">One tap saves it to your library the moment it drops.</p>\n    </div>` : "";
 
 // ---- tour (future shows, sorted; empty message otherwise)
 const today = new Date(); today.setUTCHours(0, 0, 0, 0);
@@ -52,6 +58,9 @@ const common = {
   REL_SC: esc(rel.soundcloud_url), REL_SC_ENC: encodeURIComponent(rel.soundcloud_url || "").replace(/%2F/g, "/"), REL_MP3: esc(rel.mp3_url),
   SOCIAL_SOUNDCLOUD: esc(socials.soundcloud || "https://soundcloud.com/zwrlddd"), SOCIALS: socialsHtml, TOUR: tourHtml,
   CONTACT_ENDPOINT: esc(site.contact_endpoint || ""),
+  SUBSCRIBE_ENDPOINT: esc(presave.subscribe_endpoint || ((site.contact_endpoint || "").replace(/\/+$/, "") + "/subscribe")),
+  PRESAVE_HEADLINE: esc(presave.headline || "New music is coming"), PRESAVE_INTRO: esc(presave.intro || ""), PRESAVE_BUTTON: presaveButton,
+  SPOTIFY_ARTIST: esc(presave.spotify_artist_url || (socials.spotify || "").split("?")[0] || "https://open.spotify.com/artist/3NOvBcSzOHUpAqjqtWXLzQ"), PLATFORMS: platformsHtml,
 };
 const render = (tpl, vars) => tpl.replace(/\{\{([A-Z0-9_]+)\}\}/g, (_, k) => (k in vars ? vars[k] : ""));
 
@@ -64,6 +73,8 @@ for (const [file, current] of [["index.html", ""], ["about.html", "about.html"],
 const postsHtml = posts.length ? posts.map(p => `      <li><h3><a href="./${p.slug}/">${esc(p.title)}</a></h3><p class="meta"><time datetime="${p.date}">${esc(fmtDate(p.date))}</time></p>${p.summary ? `<p>${esc(p.summary)}</p>` : ""}</li>`).join("\n") : `      <li><p class="empty">First post coming soon.</p></li>`;
 fs.mkdirSync(path.join(DIST, "newsletter"), { recursive: true });
 fs.writeFileSync(path.join(DIST, "newsletter", "index.html"), render(read(path.join(SRC, "newsletter.html")), { ...common, ROOT: "../", NAV: nav("newsletter/", "../"), POSTS: postsHtml }));
+fs.mkdirSync(path.join(DIST, "presave"), { recursive: true });
+fs.writeFileSync(path.join(DIST, "presave", "index.html"), render(read(path.join(SRC, "presave.html")), { ...common, ROOT: "../", NAV: nav("presave/", "../") }));
 const postTpl = read(path.join(SRC, "post.html"));
 for (const p of posts) {
   fs.mkdirSync(path.join(DIST, "newsletter", p.slug), { recursive: true });
@@ -92,9 +103,9 @@ const simplePage = (title, body) => render(read(path.join(SRC, "thanks.html")), 
 const baseScript = `<script>document.write('<base href="' + (location.pathname.indexOf("/zwrld-site/") === 0 ? "/zwrld-site/" : "/") + '">')</script>`;
 fs.writeFileSync(path.join(DIST, "404.html"), simplePage("Page not found", `    <p class="kicker">404</p>\n    <h2>Page not found</h2>\n    <p class="blurb">That address doesn&rsquo;t exist here. The music is one tap away.</p>\n    <a class="btn btn-primary" href="./">Back to the music</a>`).replace('<meta charset="utf-8">', '<meta charset="utf-8">\n' + baseScript));
 fs.mkdirSync(path.join(DIST, "admin"), { recursive: true });
-fs.writeFileSync(path.join(DIST, "admin", "index.html"), simplePage("Admin", `    <p class="kicker">Admin</p>\n    <h2>Coming soon</h2>\n    <p class="blurb">The site editor is being rebuilt for the new hosting. Check back soon.</p>\n    <a class="btn btn-primary" href="../">Back to the site</a>`).replace(/\.\/(styles\.css|assets\/)/g, "../$1").replace(/href="\.\/"/g, 'href="../"').replace(/href="\.\/(about|contact|newsletter)/g, 'href="../$1'));
+fs.writeFileSync(path.join(DIST, "admin", "index.html"), simplePage("Admin", `    <p class="kicker">Admin</p>\n    <h2>Coming soon</h2>\n    <p class="blurb">The site editor is being rebuilt for the new hosting. Check back soon.</p>\n    <a class="btn btn-primary" href="../">Back to the site</a>`).replace(/\.\/(styles\.css|assets\/)/g, "../$1").replace(/href="\.\/"/g, 'href="../"').replace(/href="\.\/(about|contact|newsletter|presave)/g, 'href="../$1'));
 
 for (const f of ["styles.css", "og.jpg"]) fs.copyFileSync(path.join(SRC, f), path.join(DIST, f));
 fs.cpSync(path.join(SRC, "assets"), path.join(DIST, "assets"), { recursive: true });
 fs.writeFileSync(path.join(DIST, ".nojekyll"), "");
-console.log(`built ${4 + 1 + posts.length} pages into dist/ (${posts.length} newsletter post${posts.length === 1 ? "" : "s"}, ${shows.length} upcoming show${shows.length === 1 ? "" : "s"})`);
+console.log(`built ${4 + 2 + posts.length} pages into dist/ (${posts.length} newsletter post${posts.length === 1 ? "" : "s"}, ${shows.length} upcoming show${shows.length === 1 ? "" : "s"})`);
