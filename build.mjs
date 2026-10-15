@@ -21,7 +21,7 @@ const merch = fs.existsSync(path.join(CONTENT, "merch.json")) ? json(path.join(C
 const rel = site.latest_release || {};
 
 // ---- nav
-const NAV_ITEMS = [["", "Home"], ["about.html", "About"], ["presave/", "Pre-save"], ["merch/", "Merch"], ["newsletter/", "Newsletter"], ["contact.html", "Contact"]];
+const NAV_ITEMS = [["", "Home"], ["about.html", "About"], ["presave/", "Pre-save"], ["merch/", "Merch"], ["label/", "Label"], ["newsletter/", "Newsletter"], ["contact.html", "Contact"]];
 const nav = (current, root) => `  <nav class="nav" aria-label="Pages">\n` + NAV_ITEMS.map(([href, label]) => `    <a href="${root}${href}"${href === current ? ' aria-current="page"' : ""}>${label}</a>`).join("\n") + `\n  </nav>`;
 
 // ---- socials (only the ones with a URL show)
@@ -108,6 +108,34 @@ for (const p of posts) {
   fs.writeFileSync(path.join(DIST, "blog", p.slug, "index.html"), redirectPage(`../../newsletter/${p.slug}/`, p.title));
 }
 
+// ---- record label (content/label.json: name, tagline, about, roster[{name, genre, image, url, link_label}], submit_*, genres[]); the form posts to the contact Worker's /submit route
+const labelPath = path.join(CONTENT, "label.json");
+if (fs.existsSync(labelPath)) {
+  const label = json(labelPath);
+  const lname = String(label.name || "ZWrld Music").trim();
+  const roster = (Array.isArray(label.roster) ? label.roster : []).filter(a => a && a.name);
+  const rosterCard = (a) => `      <article class="roster-card">\n` +
+    (a.image ? `        <img class="roster-img" src="../${esc(a.image)}" alt="${esc(a.name)}" width="600" height="600" loading="lazy">\n` : "") +
+    `        <div class="roster-body">\n          <h3>${esc(a.name)}</h3>\n` + (a.genre ? `          <p class="roster-genre">${esc(a.genre)}</p>\n` : "") +
+    (a.url ? `          <a class="btn btn-outline" href="${esc(a.url)}" target="_blank" rel="noopener">${esc(a.link_label || "Listen")}</a>\n` : "") +
+    `        </div>\n      </article>`;
+  const rosterHtml = roster.length ? `    <div class="roster-grid">\n` + roster.map(rosterCard).join("\n") + `\n    </div>` : `    <p class="empty">Roster coming soon.</p>`;
+  const steps = (Array.isArray(label.submit_steps) ? label.submit_steps : []).filter(Boolean);
+  const stepsHtml = steps.length ? `    <ol class="label-steps">\n` + steps.map(s => `      <li>${esc(s)}</li>`).join("\n") + `\n    </ol>` : "";
+  const genres = (Array.isArray(label.genres) && label.genres.length ? label.genres : ["Country", "Hip-hop / Rap", "Other"]);
+  const genresHtml = genres.map(g => `        <option>${esc(g)}</option>`).join("\n");
+  const endpoint = label.submit_endpoint || ((site.contact_endpoint || "").replace(/\/+$/, "") + "/submit");
+  fs.mkdirSync(path.join(DIST, "label"), { recursive: true });
+  fs.writeFileSync(path.join(DIST, "label", "index.html"), render(read(path.join(SRC, "label.html")), {
+    ...common, ROOT: "../", NAV: nav("label/", "../"),
+    LABEL_NAME: esc(lname), LABEL_TAGLINE: esc(label.tagline || "Independent label"), LABEL_ABOUT: esc(label.about || ""),
+    LABEL_DESC: esc(`${lname}: an independent record label from Colorado founded by ZWrld. Country, hip-hop and faith-inspired music. Artists can submit their music here.`),
+    LABEL_ROSTER: rosterHtml, LABEL_STEPS: stepsHtml, LABEL_GENRES: genresHtml,
+    LABEL_SUBMIT_HEADLINE: esc(label.submit_headline || "Submit your music"), LABEL_SUBMIT_INTRO: esc(label.submit_intro || ""),
+    LABEL_ENDPOINT: esc(endpoint),
+  }));
+}
+
 // ---- 404 page (GitHub Pages serves /404.html for missing addresses) and a placeholder at /admin
 const simplePage = (title, body) => render(read(path.join(SRC, "thanks.html")), { ...common, ROOT: "./", NAV: nav("", "./") })
   .replace(/<title>[^<]*<\/title>/, `<title>${esc(title)} &middot; ZWrld</title>`)
@@ -116,7 +144,7 @@ const simplePage = (title, body) => render(read(path.join(SRC, "thanks.html")), 
 const baseScript = `<script>document.write('<base href="' + (location.pathname.indexOf("/zwrld-site/") === 0 ? "/zwrld-site/" : "/") + '">')</script>`;
 fs.writeFileSync(path.join(DIST, "404.html"), simplePage("Page not found", `    <p class="kicker">404</p>\n    <h2>Page not found</h2>\n    <p class="blurb">That address doesn&rsquo;t exist here. The music is one tap away.</p>\n    <a class="btn btn-primary" href="./">Back to the music</a>`).replace('<meta charset="utf-8">', '<meta charset="utf-8">\n' + baseScript));
 fs.mkdirSync(path.join(DIST, "admin"), { recursive: true });
-fs.writeFileSync(path.join(DIST, "admin", "index.html"), simplePage("Admin", `    <p class="kicker">Admin</p>\n    <h2>Coming soon</h2>\n    <p class="blurb">The site editor is being rebuilt for the new hosting. Check back soon.</p>\n    <a class="btn btn-primary" href="../">Back to the site</a>`).replace(/\.\/(styles\.css|assets\/)/g, "../$1").replace(/href="\.\/"/g, 'href="../"').replace(/href="\.\/(about|contact|newsletter|presave)/g, 'href="../$1'));
+fs.writeFileSync(path.join(DIST, "admin", "index.html"), simplePage("Admin", `    <p class="kicker">Admin</p>\n    <h2>Coming soon</h2>\n    <p class="blurb">The site editor is being rebuilt for the new hosting. Check back soon.</p>\n    <a class="btn btn-primary" href="../">Back to the site</a>`).replace(/\.\/(styles\.css|assets\/)/g, "../$1").replace(/href="\.\/"/g, 'href="../"').replace(/href="\.\/(about|contact|newsletter|presave|merch|label)/g, 'href="../$1'));
 
 for (const f of ["styles.css", "og.jpg"]) fs.copyFileSync(path.join(SRC, f), path.join(DIST, f));
 fs.cpSync(path.join(SRC, "assets"), path.join(DIST, "assets"), { recursive: true });
