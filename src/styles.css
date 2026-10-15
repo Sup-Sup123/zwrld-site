@@ -140,3 +140,17 @@ h2{margin:.4rem 0 .25rem;font-family:var(--display);font-weight:700;font-size:cl
   .nav{justify-content:center}
 }
 @media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}.btn{transition:none}}
+
+/* ---------- pre-save ---------- */
+.btn-big{font-size:1.1rem;padding:1rem 1.9rem;min-height:56px}
+.btn-spotify{background:#1db954;color:#0b1a10;border-color:#1db954}
+.btn-spotify:hover{background:#1ed760;border-color:#1ed760;color:#0b1a10}
+.btn-spotify svg{flex:none}
+.presave-spotify{margin-top:1.2rem}
+.presave-spotify .small{margin-top:.9rem;max-width:36ch;margin-left:auto;margin-right:auto}
+.presave-live{margin:1.4rem auto 2.2rem;padding:1.4rem 1.2rem 1.2rem;border:1px solid var(--line-strong);border-radius:var(--radius);background:linear-gradient(180deg,var(--bg3),var(--bg2));box-shadow:0 10px 40px rgba(0,0,0,.35)}
+.presave-live .kicker{margin-bottom:.8rem}
+.presave-live .small{margin:.8rem 0 0}
+.form .optional{text-transform:none;letter-spacing:0;color:var(--dim);font-weight:400}
+.socials-small{margin-top:.9rem}
+.socials-small a{min-height:40px;padding:.45rem .95rem;font-size:.9rem}
