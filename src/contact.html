@@ -1,0 +1,63 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#140d0a">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="ZWrld">
+<meta property="og:image" content="https://zwrld.org/og.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="1200">
+<meta property="og:image:alt" content="Blue Eyes single cover: a sunset photo">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://zwrld.org/og.jpg">
+<link rel="icon" href="assets/blue-eyes-cover.jpg">
+<link rel="stylesheet" href="styles.css">
+<title>Contact ZWrld &middot; Booking, press &amp; radio</title>
+<meta name="description" content="Get in touch with ZWrld for booking, press, radio, or fan mail.">
+<meta property="og:title" content="Contact ZWrld &middot; Booking, press &amp; radio">
+<meta property="og:description" content="Get in touch with ZWrld for booking, press, radio, or fan mail.">
+<meta property="og:url" content="https://zwrld.org/contact.html">
+<link rel="canonical" href="https://zwrld.org/contact.html">
+<meta name="twitter:title" content="Contact ZWrld &middot; Booking, press &amp; radio">
+<meta name="twitter:description" content="Get in touch with ZWrld for booking, press, radio, or fan mail.">
+</head>
+<body>
+<header class="hero hero-sub">
+{{NAV}}
+  <p class="name name-sm"><a href="/">ZWrld</a></p>
+</header>
+<main>
+  <section class="section section-first" aria-labelledby="contact-h">
+    <p class="kicker">Contact</p>
+    <h2 id="contact-h">Get in touch</h2>
+    <p class="blurb">Booking, press, radio, or just a hello. Every message is read.</p>
+    <form class="form" name="contact" method="POST" action="/thanks.html" data-netlify="true" data-netlify-honeypot="bot-field" netlify>
+      <input type="hidden" name="form-name" value="contact">
+      <p class="hp"><label>Don&rsquo;t fill this out if you&rsquo;re human: <input name="bot-field"></label></p>
+      <label for="f-name">Your name</label>
+      <input id="f-name" name="name" type="text" autocomplete="name" required>
+      <label for="f-email">Your email</label>
+      <input id="f-email" name="email" type="email" autocomplete="email" required>
+      <label for="f-reason">Reason</label>
+      <select id="f-reason" name="reason" required>
+        <option value="" disabled selected>Choose one</option>
+        <option>Booking</option>
+        <option>Press</option>
+        <option>Radio</option>
+        <option>Fan mail</option>
+        <option>Other</option>
+      </select>
+      <label for="f-message">Message</label>
+      <textarea id="f-message" name="message" rows="6" required></textarea>
+      <button class="btn btn-primary" type="submit">Send message</button>
+    </form>
+    <p class="small">Or email directly: <a href="mailto:{{BOOKING_EMAIL}}">{{BOOKING_EMAIL}}</a></p>
+  </section>
+</main>
+<footer class="footer">
+  <p>&copy; 2026 ZWrld &middot; <a href="/">Home</a> &middot; <a href="/about.html">About</a> &middot; <a href="/blog/">Blog</a> &middot; <a href="/contact.html">Contact</a></p>
+</footer>
+</body>
+</html>

@@ -1,0 +1,87 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>ZWrld &middot; Country songwriter &middot; Blue Eyes out now</title>
+<meta name="description" content="ZWrld is a country songwriter from Northglenn, Colorado, raised in southern Iowa. New single &ldquo;Blue Eyes&rdquo; is out now.">
+<meta name="theme-color" content="#140d0a">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="ZWrld">
+<meta property="og:title" content="ZWrld &middot; Blue Eyes out now">
+<meta property="og:description" content="Country songwriter from Northglenn, CO, raised in southern Iowa. Listen to the new single &ldquo;Blue Eyes&rdquo;.">
+<meta property="og:image" content="https://zwrld.org/og.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="1200">
+<meta property="og:image:alt" content="Blue Eyes single cover: a sunset photo">
+<meta property="og:url" content="https://zwrld.org/">
+<link rel="canonical" href="https://zwrld.org/">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="ZWrld &middot; Blue Eyes out now">
+<meta name="twitter:description" content="Country songwriter from Northglenn, CO, raised in southern Iowa.">
+<meta name="twitter:image" content="https://zwrld.org/og.jpg">
+<link rel="icon" href="assets/blue-eyes-cover.jpg">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<a class="skip" href="#music">Skip to music</a>
+
+<header class="hero">
+{{NAV}}
+  <h1 class="name">ZWrld</h1>
+  <p class="tag">{{TAGLINE}}</p>
+  <img class="cover" src="assets/blue-eyes-cover.jpg" width="1200" height="1200" alt="Blue Eyes single cover: a sunset photo">
+  <p class="out">New {{REL_TYPE_LOWER}} <strong>&ldquo;{{REL_TITLE}}&rdquo;</strong> out now</p>
+  <a class="btn btn-primary" href="#music">Listen</a>
+</header>
+
+<main>
+  <section id="music" class="section" aria-labelledby="music-h">
+    <p class="kicker">Latest release</p>
+    <h2 id="music-h">{{REL_TITLE}}</h2>
+    <p class="meta">{{REL_TYPE}} &middot; {{REL_DATE}}</p>
+    <p class="blurb">{{REL_BLURB}}</p>
+
+    <div class="player">
+      <iframe title="{{REL_TITLE}} by ZWrld on SoundCloud" width="100%" height="166" scrolling="no" frameborder="no" allow="autoplay"
+        src="https://w.soundcloud.com/player/?url={{REL_SC_ENC}}&amp;color=%23e8894a&amp;auto_play=false&amp;hide_related=true&amp;show_comments=false&amp;show_user=true&amp;show_reposts=false&amp;show_teaser=false"></iframe>
+    </div>
+
+    <a class="btn btn-sc" href="{{REL_SC}}" target="_blank" rel="noopener">Listen on SoundCloud</a>
+
+    <div class="fallback">
+      <p class="small">Or play it right here:</p>
+      <audio controls preload="none" src="{{REL_MP3}}">
+        <a href="{{REL_MP3}}">Play {{REL_TITLE}} (MP3)</a>
+      </audio>
+    </div>
+  </section>
+
+  <section id="tour" class="section" aria-labelledby="tour-h">
+    <p class="kicker">Live</p>
+    <h2 id="tour-h">Tour dates</h2>
+{{TOUR}}
+    <p class="small">Booking inquiries: <a href="mailto:{{BOOKING_EMAIL}}">{{BOOKING_EMAIL}}</a></p>
+  </section>
+
+  <section id="about" class="section" aria-labelledby="about-h">
+    <p class="kicker">About</p>
+    <h2 id="about-h" class="visually-hidden">About ZWrld</h2>
+    <p class="about">{{ABOUT_SHORT}}</p>
+    <p class="small"><a href="/about.html">Read more about ZWrld</a></p>
+  </section>
+
+  <section id="contact" class="section" aria-labelledby="contact-h">
+    <p class="kicker">Follow &amp; contact</p>
+    <h2 id="contact-h">Find ZWrld</h2>
+{{SOCIALS}}
+    <p class="contact">Email: <a href="mailto:{{BOOKING_EMAIL}}">{{BOOKING_EMAIL}}</a></p>
+    <p class="small"><a class="btn btn-sc" href="/contact.html">Send a message</a></p>
+  </section>
+</main>
+
+<footer class="footer">
+  <p>&copy; 2026 ZWrld</p>
+</footer>
+</body>
+</html>

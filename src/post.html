@@ -1,0 +1,44 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#140d0a">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="ZWrld">
+<meta property="og:image" content="https://zwrld.org/og.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="1200">
+<meta property="og:image:alt" content="Blue Eyes single cover: a sunset photo">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://zwrld.org/og.jpg">
+<link rel="icon" href="assets/blue-eyes-cover.jpg">
+<link rel="stylesheet" href="styles.css">
+<title>{{POST_TITLE}} &middot; ZWrld</title>
+<meta name="description" content="{{POST_SUMMARY}}">
+<meta property="og:title" content="{{POST_TITLE}} &middot; ZWrld">
+<meta property="og:description" content="{{POST_SUMMARY}}">
+<meta property="og:url" content="https://zwrld.org/blog/{{POST_SLUG}}/">
+<link rel="canonical" href="https://zwrld.org/blog/{{POST_SLUG}}/">
+<meta name="twitter:title" content="{{POST_TITLE}} &middot; ZWrld">
+<meta name="twitter:description" content="{{POST_SUMMARY}}">
+</head>
+<body>
+<header class="hero hero-sub">
+{{NAV}}
+  <p class="name name-sm"><a href="/">ZWrld</a></p>
+</header>
+<main>
+  <article class="section section-first post" aria-labelledby="post-h">
+    <p class="kicker">Blog</p>
+    <h2 id="post-h">{{POST_TITLE}}</h2>
+    <p class="meta"><time datetime="{{POST_DATE_ISO}}">{{POST_DATE}}</time></p>
+    <div class="prose">{{POST_BODY}}</div>
+    <p class="small"><a href="/blog/">&larr; All posts</a></p>
+  </article>
+</main>
+<footer class="footer">
+  <p>&copy; 2026 ZWrld &middot; <a href="/">Home</a> &middot; <a href="/about.html">About</a> &middot; <a href="/blog/">Blog</a> &middot; <a href="/contact.html">Contact</a></p>
+</footer>
+</body>
+</html>
