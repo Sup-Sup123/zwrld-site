@@ -88,7 +88,7 @@ fs.mkdirSync(path.join(DIST, "merch"), { recursive: true });
 fs.writeFileSync(path.join(DIST, "merch", "index.html"), render(read(path.join(SRC, "merch.html")), { ...common, ROOT: "../", NAV: nav("merch/", "../"), MERCH_HEADLINE: esc(merch.headline || "Merch"), MERCH_INTRO: esc(merch.intro || ""), MERCH_GRID: merchGrid, MERCH_STORE: esc(merch.store_url || "") }));
 // ---- tours (content/tours.json: empty_message, shows[{date, city, venue, ticket_url}])
 fs.mkdirSync(path.join(DIST, "tours"), { recursive: true });
-fs.writeFileSync(path.join(DIST, "tours", "index.html"), render(read(path.join(SRC, "tours.html")), { ...common, ROOT: "../", NAV: nav("tours/", "../"), TOURS_INTRO: esc(tour.intro || (shows.length ? "Come say hi. Tickets below." : "Nothing on the calendar right now. New dates land here first.")) }));
+fs.writeFileSync(path.join(DIST, "tours", "index.html"), render(read(path.join(SRC, "tours.html")), { ...common, ROOT: "../", NAV: nav("tours/", "../"), TOURS_INTRO: (tour.intro || shows.length) ? `    <p class="blurb">${esc(tour.intro || "Come say hi. Tickets below.")}</p>` : "" }));
 fs.mkdirSync(path.join(DIST, "presave"), { recursive: true });
 fs.writeFileSync(path.join(DIST, "presave", "index.html"), render(read(path.join(SRC, "presave.html")), { ...common, ROOT: "../", NAV: nav("presave/", "../") }));
 const postTpl = read(path.join(SRC, "post.html"));
