@@ -1,4 +1,4 @@
 {
-  "empty_message": "New dates coming soon.",
+  "_note": "Moved: tour dates now live in content/tours.json (this file is no longer read by build.mjs).",
   "shows": []
 }

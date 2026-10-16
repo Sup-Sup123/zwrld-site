@@ -1,8 +1,15 @@
 {
   "headline": "Wear the songs",
-  "intro": "Every piece is printed to order and shipped by the shop, so nothing sells out. Sizes S to 5XL on the tees and hoodies.",
+  "intro": "The CD is printed to order by elasticStage; everything else is printed to order by the shop. Nothing sells out. Sizes S to 5XL on the tees and hoodies.",
   "store_url": "https://zwrld-shop.fourthwall.com",
   "items": [
+    {
+      "name": "ZWrld 26' — CD Single",
+      "price": 14.9,
+      "url": "https://elasticstage.com/zwrld/releases/zwrld-26-singleep",
+      "image": "assets/merch/zwrld-26-cd.jpg",
+      "blurb": "Blue Eyes + I Still Miss You on CD. Printed to order and shipped worldwide."
+    },
     {
       "name": "Heart Half Broken Tee",
       "price": 25.0,

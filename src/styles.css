@@ -192,3 +192,7 @@ h2{margin:.4rem 0 .25rem;font-family:var(--display);font-weight:700;font-size:cl
 .label-steps li { margin:.35rem 0 }
 .form label.check { display:flex;gap:.7rem;align-items:flex-start;text-transform:none;letter-spacing:0;font-size:.95rem;color:var(--ink);line-height:1.45;margin-top:1.3rem;cursor:pointer }
 .form label.check input { width:22px;height:22px;min-height:0;flex:none;margin:.1rem 0 0;padding:0;accent-color:var(--sun) }
+
+/* ---------- tours */
+.tour-follow{margin-top:1.6rem;padding-top:1.2rem;border-top:1px solid var(--line)}
+.tour-follow .small{margin-bottom:.6rem}

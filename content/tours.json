@@ -1,0 +1,5 @@
+{
+  "_note": "Tour page (zwrld.org/tours/). Add shows to 'shows' with date (YYYY-MM-DD), city, venue and ticket_url (optional). Past dates drop off automatically. When the list is empty the page shows 'empty_message'.",
+  "empty_message": "No dates announced yet — follow for updates.",
+  "shows": []
+}

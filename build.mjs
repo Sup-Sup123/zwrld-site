@@ -15,13 +15,13 @@ const slugify = (s) => String(s).toLowerCase().replace(/[^a-z0-9]+/g, "-").repla
 
 const site = json(path.join(CONTENT, "site.json"));
 const socials = json(path.join(CONTENT, "socials.json"));
-const tour = json(path.join(CONTENT, "tour.json"));
+const tour = fs.existsSync(path.join(CONTENT, "tours.json")) ? json(path.join(CONTENT, "tours.json")) : fs.existsSync(path.join(CONTENT, "tour.json")) ? json(path.join(CONTENT, "tour.json")) : { shows: [] };
 const presave = fs.existsSync(path.join(CONTENT, "presave.json")) ? json(path.join(CONTENT, "presave.json")) : {};
 const merch = fs.existsSync(path.join(CONTENT, "merch.json")) ? json(path.join(CONTENT, "merch.json")) : {};
 const rel = site.latest_release || {};
 
 // ---- nav
-const NAV_ITEMS = [["", "Home"], ["about.html", "About"], ["presave/", "Pre-save"], ["merch/", "Merch"], ["label/", "Label"], ["newsletter/", "Newsletter"], ["contact.html", "Contact"]];
+const NAV_ITEMS = [["", "Home"], ["about.html", "About"], ["presave/", "Pre-save"], ["merch/", "Merch"], ["label/", "Label"], ["tours/", "Tours"], ["newsletter/", "Newsletter"], ["contact.html", "Contact"]];
 const nav = (current, root) => `  <nav class="nav" aria-label="Pages">\n` + NAV_ITEMS.map(([href, label]) => `    <a href="${root}${href}"${href === current ? ' aria-current="page"' : ""}>${label}</a>`).join("\n") + `\n  </nav>`;
 
 // ---- socials (only the ones with a URL show)
@@ -41,8 +41,8 @@ const presaveButton = presaveReleases.length ? `    <div class="release-list">\n
 const today = new Date(); today.setUTCHours(0, 0, 0, 0);
 const shows = (tour.shows || []).filter(s => s && s.date && new Date(s.date + "T23:59:59Z") >= today).sort((a, b) => String(a.date).localeCompare(String(b.date)));
 const tourHtml = shows.length
-  ? `    <ul class="tour-list">\n` + shows.map(s => `      <li><span class="tour-date">${esc(new Date(s.date + "T12:00:00Z").toLocaleDateString("en-US", { weekday: "short", month: "short", day: "numeric", timeZone: "UTC" }))}</span><div class="tour-where">${esc(s.venue)}<span>${esc(s.city)}</span></div>${s.tickets ? `<a class="btn" href="${esc(s.tickets)}" target="_blank" rel="noopener">Tickets</a>` : ""}</li>`).join("\n") + `\n    </ul>`
-  : `    <p class="empty">${esc(tour.empty_message || "New dates coming soon.")}</p>`;
+  ? `    <ul class="tour-list">\n` + shows.map(s => `      <li><span class="tour-date">${esc(new Date(s.date + "T12:00:00Z").toLocaleDateString("en-US", { weekday: "short", month: "short", day: "numeric", timeZone: "UTC" }))}</span><div class="tour-where">${esc(s.venue)}<span>${esc(s.city)}</span></div>${(s.ticket_url || s.tickets) ? `<a class="btn" href="${esc(s.ticket_url || s.tickets)}" target="_blank" rel="noopener">Tickets</a>` : ""}</li>`).join("\n") + `\n    </ul>`
+  : `    <p class="empty">${esc(tour.empty_message || "No dates announced yet — follow for updates.")}</p>`;
 
 // ---- blog
 const posts = fs.readdirSync(path.join(CONTENT, "blog")).filter(f => f.endsWith(".md")).map(f => {
@@ -61,7 +61,7 @@ const common = {
   TAGLINE: esc(site.tagline), ABOUT_SHORT: esc(site.about_short), ABOUT_BIO: marked.parse(site.about_bio || ""), BOOKING_EMAIL: esc(site.booking_email),
   REL_TITLE: esc(rel.title), REL_TYPE: esc(rel.type || "Single"), REL_TYPE_LOWER: esc(String(rel.type || "single").toLowerCase()), REL_DATE: esc(rel.date ? fmtDate(rel.date) : ""), REL_BLURB: esc(rel.blurb),
   REL_SC: esc(rel.soundcloud_url), REL_SC_ENC: encodeURIComponent(rel.soundcloud_url || "").replace(/%2F/g, "/"), REL_MP3: esc(rel.mp3_url),
-  SOCIAL_SOUNDCLOUD: esc(socials.soundcloud || "https://soundcloud.com/zwrlddd"), SOCIALS: socialsHtml, TOUR: tourHtml,
+  SOCIAL_SOUNDCLOUD: esc(socials.soundcloud || "https://soundcloud.com/zwrlddd"), SOCIALS: socialsHtml, TOUR: tourHtml, TOUR_HOME: shows.length ? `${shows.length} show${shows.length === 1 ? "" : "s"} on the calendar.` : esc(tour.empty_message || "No dates announced yet — follow for updates."),
   CONTACT_ENDPOINT: esc(site.contact_endpoint || ""),
   SUBSCRIBE_ENDPOINT: esc(presave.subscribe_endpoint || ((site.contact_endpoint || "").replace(/\/+$/, "") + "/subscribe")),
   PRESAVE_HEADLINE: esc(presave.headline || "New music is coming"), PRESAVE_INTRO: esc(presave.intro || ""), PRESAVE_BUTTON: presaveButton,
@@ -86,6 +86,9 @@ fs.mkdirSync(path.join(DIST, "newsletter"), { recursive: true });
 fs.writeFileSync(path.join(DIST, "newsletter", "index.html"), render(read(path.join(SRC, "newsletter.html")), { ...common, ROOT: "../", NAV: nav("newsletter/", "../"), POSTS: postsHtml }));
 fs.mkdirSync(path.join(DIST, "merch"), { recursive: true });
 fs.writeFileSync(path.join(DIST, "merch", "index.html"), render(read(path.join(SRC, "merch.html")), { ...common, ROOT: "../", NAV: nav("merch/", "../"), MERCH_HEADLINE: esc(merch.headline || "Merch"), MERCH_INTRO: esc(merch.intro || ""), MERCH_GRID: merchGrid, MERCH_STORE: esc(merch.store_url || "") }));
+// ---- tours (content/tours.json: empty_message, shows[{date, city, venue, ticket_url}])
+fs.mkdirSync(path.join(DIST, "tours"), { recursive: true });
+fs.writeFileSync(path.join(DIST, "tours", "index.html"), render(read(path.join(SRC, "tours.html")), { ...common, ROOT: "../", NAV: nav("tours/", "../"), TOURS_INTRO: esc(tour.intro || (shows.length ? "Come say hi. Tickets below." : "Nothing on the calendar right now. New dates land here first.")) }));
 fs.mkdirSync(path.join(DIST, "presave"), { recursive: true });
 fs.writeFileSync(path.join(DIST, "presave", "index.html"), render(read(path.join(SRC, "presave.html")), { ...common, ROOT: "../", NAV: nav("presave/", "../") }));
 const postTpl = read(path.join(SRC, "post.html"));
@@ -144,7 +147,7 @@ const simplePage = (title, body) => render(read(path.join(SRC, "thanks.html")), 
 const baseScript = `<script>document.write('<base href="' + (location.pathname.indexOf("/zwrld-site/") === 0 ? "/zwrld-site/" : "/") + '">')</script>`;
 fs.writeFileSync(path.join(DIST, "404.html"), simplePage("Page not found", `    <p class="kicker">404</p>\n    <h2>Page not found</h2>\n    <p class="blurb">That address doesn&rsquo;t exist here. The music is one tap away.</p>\n    <a class="btn btn-primary" href="./">Back to the music</a>`).replace('<meta charset="utf-8">', '<meta charset="utf-8">\n' + baseScript));
 fs.mkdirSync(path.join(DIST, "admin"), { recursive: true });
-fs.writeFileSync(path.join(DIST, "admin", "index.html"), simplePage("Admin", `    <p class="kicker">Admin</p>\n    <h2>Coming soon</h2>\n    <p class="blurb">The site editor is being rebuilt for the new hosting. Check back soon.</p>\n    <a class="btn btn-primary" href="../">Back to the site</a>`).replace(/\.\/(styles\.css|assets\/)/g, "../$1").replace(/href="\.\/"/g, 'href="../"').replace(/href="\.\/(about|contact|newsletter|presave|merch|label)/g, 'href="../$1'));
+fs.writeFileSync(path.join(DIST, "admin", "index.html"), simplePage("Admin", `    <p class="kicker">Admin</p>\n    <h2>Coming soon</h2>\n    <p class="blurb">The site editor is being rebuilt for the new hosting. Check back soon.</p>\n    <a class="btn btn-primary" href="../">Back to the site</a>`).replace(/\.\/(styles\.css|assets\/)/g, "../$1").replace(/href="\.\/"/g, 'href="../"').replace(/href="\.\/(about|contact|newsletter|presave|merch|label|tours)/g, 'href="../$1'));
 
 for (const f of ["styles.css", "og.jpg"]) fs.copyFileSync(path.join(SRC, f), path.join(DIST, f));
 fs.cpSync(path.join(SRC, "assets"), path.join(DIST, "assets"), { recursive: true });
