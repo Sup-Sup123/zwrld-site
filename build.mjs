@@ -123,6 +123,20 @@ if (fs.existsSync(labelPath)) {
     (a.url ? `          <a class="btn btn-outline" href="${esc(a.url)}" target="_blank" rel="noopener">${esc(a.link_label || "Listen")}</a>\n` : "") +
     `        </div>\n      </article>`;
   const rosterHtml = roster.length ? `    <div class="roster-grid">\n` + roster.map(rosterCard).join("\n") + `\n    </div>` : `    <p class="empty">Roster coming soon.</p>`;
+  // label detail sections (content/label.json: what_we_do{kicker,headline,items[{title,text}]}, looking_for{kicker,headline,genres[],note}, how_it_works{kicker,headline,steps[{title,text}]}, deal{kicker,headline,highlight{big,text},terms[]}); each section is skipped when its field is missing
+  const sec = (id, o, inner) => (o && inner) ? `  <section class="section label-detail" aria-labelledby="${id}-h">\n    <p class="kicker">${esc(o.kicker || "")}</p>\n    <h2 id="${id}-h">${esc(o.headline || "")}</h2>\n${inner}\n  </section>\n` : "";
+  const wwd = label.what_we_do, lf = label.looking_for, hiw = label.how_it_works, deal = label.deal;
+  const wwdItems = (wwd && Array.isArray(wwd.items) ? wwd.items : []).filter(i => i && i.title);
+  const wwdHtml = wwdItems.length ? `    <ul class="service-grid">\n` + wwdItems.map(i => `      <li class="service-card"><h3>${esc(i.title)}</h3>` + (i.text ? `<p>${esc(i.text)}</p>` : "") + `</li>`).join("\n") + `\n    </ul>` : "";
+  const lfGenres = (lf && Array.isArray(lf.genres) ? lf.genres : []).filter(Boolean);
+  const lfHtml = lf ? (lfGenres.length ? `    <ul class="genre-pills">\n` + lfGenres.map(g => `      <li>${esc(g)}</li>`).join("\n") + `\n    </ul>\n` : "") + (lf.note ? `    <p class="label-note">${esc(lf.note)}</p>` : "") : "";
+  const hiwSteps = (hiw && Array.isArray(hiw.steps) ? hiw.steps : []).filter(s => s && s.title);
+  const hiwHtml = hiwSteps.length ? `    <ol class="how-steps">\n` + hiwSteps.map((s, n) => `      <li><span class="how-num" aria-hidden="true">${n + 1}</span><div><h3>${esc(s.title)}</h3>` + (s.text ? `<p>${esc(s.text)}</p>` : "") + `</div></li>`).join("\n") + `\n    </ol>` : "";
+  const dealTerms = (deal && Array.isArray(deal.terms) ? deal.terms : []).filter(Boolean);
+  const hl = deal && deal.highlight;
+  const dealHtml = deal && (hl || dealTerms.length) ? `    <div class="deal-card">\n` + (hl && hl.big ? `      <div class="deal-big"><span class="deal-pct">${esc(hl.big)}</span><p>${esc(hl.text || "")}</p></div>\n` : "") + (dealTerms.length ? `      <ul class="deal-terms">\n` + dealTerms.map(t => `        <li>${esc(t)}</li>`).join("\n") + `\n      </ul>\n` : "") + `    </div>` : "";
+  const detailsTop = sec("what", wwd, wwdHtml);
+  const detailsMid = sec("who", lf, lfHtml) + sec("how", hiw, hiwHtml) + sec("deal", deal, dealHtml);
   const steps = (Array.isArray(label.submit_steps) ? label.submit_steps : []).filter(Boolean);
   const stepsHtml = steps.length ? `    <ol class="label-steps">\n` + steps.map(s => `      <li>${esc(s)}</li>`).join("\n") + `\n    </ol>` : "";
   const genres = (Array.isArray(label.genres) && label.genres.length ? label.genres : ["Country", "Hip-hop / Rap", "Other"]);
@@ -133,6 +147,7 @@ if (fs.existsSync(labelPath)) {
     ...common, ROOT: "../", NAV: nav("label/", "../"),
     LABEL_NAME: esc(lname), LABEL_TAGLINE: esc(label.tagline || "Independent label"), LABEL_ABOUT: esc(label.about || ""),
     LABEL_DESC: esc(`${lname}: an independent record label from Colorado founded by ZWrld. Country, hip-hop and faith-inspired music. Artists can submit their music here.`),
+    LABEL_DETAILS_TOP: detailsTop, LABEL_DETAILS_MID: detailsMid,
     LABEL_ROSTER: rosterHtml, LABEL_STEPS: stepsHtml, LABEL_GENRES: genresHtml,
     LABEL_SUBMIT_HEADLINE: esc(label.submit_headline || "Submit your music"), LABEL_SUBMIT_INTRO: esc(label.submit_intro || ""),
     LABEL_ENDPOINT: esc(endpoint),

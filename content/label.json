@@ -3,6 +3,82 @@
   "name": "ZWrld Music",
   "tagline": "Independent label · Colorado",
   "about": "ZWrld Music is an independent record label founded by the artist ZWrld in Colorado. We release country, hip-hop and faith-inspired music from artists with something real to say, and we help them get it heard.",
+  "what_we_do": {
+    "kicker": "What we do",
+    "headline": "Everything you need to get heard",
+    "items": [
+      {
+        "title": "Beats & production",
+        "text": "Help building your sound, from the beat to the finished track."
+      },
+      {
+        "title": "Mixing",
+        "text": "Clean, radio-ready mixes so your song hits like it should."
+      },
+      {
+        "title": "Cover art",
+        "text": "Artwork that looks right on every platform."
+      },
+      {
+        "title": "Lyric & music videos",
+        "text": "Visuals for YouTube, TikTok and Instagram."
+      },
+      {
+        "title": "Radio & press",
+        "text": "We pitch your music to radio stations, blogs and local press."
+      },
+      {
+        "title": "Social promo",
+        "text": "Content and promo plans to grow your fans online."
+      }
+    ]
+  },
+  "looking_for": {
+    "kicker": "Who we're looking for",
+    "headline": "Independent artists",
+    "genres": [
+      "Country",
+      "Hip-hop",
+      "Country rap",
+      "Faith music"
+    ],
+    "note": "Artists from anywhere welcome. Based in Colorado."
+  },
+  "how_it_works": {
+    "kicker": "How it works",
+    "headline": "Four simple steps",
+    "steps": [
+      {
+        "title": "Submit a link",
+        "text": "Send us a link to your music with the form below."
+      },
+      {
+        "title": "We listen",
+        "text": "We listen to every submission within 2 weeks."
+      },
+      {
+        "title": "We talk",
+        "text": "If it's a fit, we set up a call to get to know you."
+      },
+      {
+        "title": "Sign a simple agreement",
+        "text": "A short artist agreement, written in plain language."
+      }
+    ]
+  },
+  "deal": {
+    "kicker": "The deal",
+    "headline": "Simple and fair",
+    "highlight": {
+      "big": "5%",
+      "text": "The label gets 5% of your earnings. The other 95% is yours."
+    },
+    "terms": [
+      "You keep full ownership of your music. It's yours, always.",
+      "You and the label both hold a license to your songs.",
+      "If you leave the label, all licensing rights go back to you, at no cost."
+    ]
+  },
   "roster": [
     {
       "name": "ZWrld",
