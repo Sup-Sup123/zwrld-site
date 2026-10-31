@@ -1,15 +1,8 @@
 {
   "headline": "Wear the songs",
-  "intro": "The CD is printed to order by elasticStage; everything else is printed to order by the shop. Nothing sells out. Sizes S to 5XL on the tees and hoodies.",
+  "intro": "Everything is printed to order by the shop, so nothing sells out. Sizes S to 5XL on the tees and hoodies.",
   "store_url": "https://zwrld-shop.fourthwall.com",
   "items": [
-    {
-      "name": "ZWrld 26' — CD Single",
-      "price": 14.9,
-      "url": "https://elasticstage.com/zwrld/releases/zwrld-26-singleep",
-      "image": "assets/merch/zwrld-26-cd.jpg",
-      "blurb": "Blue Eyes + I Still Miss You on CD. Printed to order and shipped worldwide."
-    },
     {
       "name": "Heart Half Broken Tee",
       "price": 25.0,
@@ -39,32 +32,11 @@
       "blurb": "The cover art, big on the back."
     },
     {
-      "name": "Blue Eyes Tee",
-      "price": 20.0,
-      "url": "https://zwrld-shop.fourthwall.com/products/zwrld-blue-eyes-tee",
-      "image": "assets/merch/zwrld-blue-eyes-tee.jpg",
-      "blurb": "For my dad."
-    },
-    {
-      "name": "Blue Eyes Hoodie",
-      "price": 35.0,
-      "url": "https://zwrld-shop.fourthwall.com/products/zwrld-blue-eyes-hoodie",
-      "image": "assets/merch/zwrld-blue-eyes-hoodie.jpg",
-      "blurb": "For my dad."
-    },
-    {
       "name": "ZWrld Dad Hat",
       "price": 25.0,
       "url": "https://zwrld-shop.fourthwall.com/products/zwrld-dad-hat",
       "image": "assets/merch/zwrld-dad-hat.jpg",
       "blurb": "Embroidered. Fits everyone."
-    },
-    {
-      "name": "ZWrld Mug",
-      "price": 14.0,
-      "url": "https://zwrld-shop.fourthwall.com/products/zwrld-mug",
-      "image": "assets/merch/zwrld-mug.jpg",
-      "blurb": "11 oz, Blue Eyes on the side."
     }
   ]
 }
