@@ -4,6 +4,20 @@
   "store_url": "https://zwrld-shop.fourthwall.com",
   "items": [
     {
+      "name": "Whiskey Don't Ask Tee",
+      "price": 20.0,
+      "url": "https://zwrld-shop.fourthwall.com/products/zwrld-whiskey-dont-ask-tee",
+      "image": "assets/merch/whiskey-dont-ask-tee.jpg",
+      "blurb": "The whiskey label, front and center."
+    },
+    {
+      "name": "Whiskey Don't Ask Hoodie",
+      "price": 35.0,
+      "url": "https://zwrld-shop.fourthwall.com/products/zwrld-whiskey-dont-ask-hoodie",
+      "image": "assets/merch/whiskey-dont-ask-hoodie.jpg",
+      "blurb": "The whiskey label, big on the back."
+    },
+    {
       "name": "Heart Half Broken Tee",
       "price": 25.0,
       "url": "https://zwrld-shop.fourthwall.com/products/zwrld-heart-half-broken-tee",
