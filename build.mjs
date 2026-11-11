@@ -169,7 +169,7 @@ if (fs.existsSync(artistsPath)) {
     const meta = [a.genre, a.hometown].map(s => String(s || "").trim()).filter(Boolean).map(esc).join(" &middot; ");
     return `      <article class="artist-card">\n` +
       (a.photo ? `        <img class="artist-img" src="${esc(img(a.photo))}" alt="${esc(a.name)}" width="600" height="600" loading="lazy">\n` : "") +
-      `        <div class="artist-body">\n          <h3>${esc(a.name)}</h3>\n` + (meta ? `          <p class="artist-meta">${meta}</p>\n` : "") +
+      `        <div class="artist-body">\n          <h3><a href="${esc(slugify(a.slug || a.name))}/">${esc(a.name)}</a></h3>\n` + (meta ? `          <p class="artist-meta">${meta}</p>\n` : "") +
       (a.bio ? `          <p class="artist-bio">${esc(a.bio)}</p>\n` : "") +
       (links.length ? `          <div class="artist-links">\n` + links.map(([k, u], n) => `            <a class="btn ${n === 0 ? "btn-primary" : "btn-outline"}" href="${esc(String(u).trim())}" target="_blank" rel="noopener">${n === 0 && k === "spotify" ? "Listen on Spotify" : esc(linkLabel(k))}</a>`).join("\n") + `\n          </div>\n` : "") +
       `        </div>\n      </article>`;
@@ -183,6 +183,25 @@ if (fs.existsSync(artistsPath)) {
     ARTISTS_DESC: esc(`The artists signed to ${labelName}, the independent record label from Colorado founded by ZWrld.` + (list.length ? ` Roster: ${list.map(a => a.name).join(", ")}.` : "")),
     ARTISTS: artistsHtml,
   }));
+  // ---- one page per artist at /artists/<slug>/
+  for (const a of list) {
+    const slug = slugify(a.slug || a.name);
+    if (!slug) continue;
+    const one = `    <div class="artist-grid artist-single">\n` + artistCard(a).replace(/<h3><a href="[^"]*">([^<]*)<\/a><\/h3>/, '<h3>$1</h3>').replace(/src="\.\.\//g, 'src="../../') + `\n    </div>`;
+    const t = `${a.name} – ${labelName}`;
+    const d = String(a.bio || `${a.name} on ${labelName}.`).slice(0, 300);
+    let html = render(read(path.join(SRC, "artists.html")), {
+      ...common, ROOT: "../../", NAV: nav("artists/", "../../"),
+      LABEL_NAME: esc(labelName), ARTISTS_HEADLINE: esc(a.name), ARTISTS_INTRO: esc([a.genre, a.hometown].filter(Boolean).join(" · ")),
+      ARTISTS_DESC: esc(d), ARTISTS: one,
+    });
+    html = html.replace(/<title>[^<]*<\/title>/, `<title>${esc(t)}</title>`)
+      .replace(/(property="og:title" content=")[^"]*/, `$1${esc(t)}`).replace(/(name="twitter:title" content=")[^"]*/, `$1${esc(t)}`)
+      .replace(/https:\/\/zwrld\.org\/artists\/"/g, `https://zwrld.org/artists/${slug}/"`);
+    if (/^https?:\/\//.test(String(a.photo || ""))) html = html.replace(/(property="og:image" content=")[^"]*/, `$1${esc(a.photo)}`).replace(/(name="twitter:image" content=")[^"]*/, `$1${esc(a.photo)}`);
+    fs.mkdirSync(path.join(DIST, "artists", slug), { recursive: true });
+    fs.writeFileSync(path.join(DIST, "artists", slug, "index.html"), html);
+  }
 }
 
 // ---- 404 page (GitHub Pages serves /404.html for missing addresses) and a placeholder at /admin
