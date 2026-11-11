@@ -1,40 +1,56 @@
 {
-  "_how_to_add": "Signed artists page (zwrld.org/artists/). To add an artist, copy the block in _template into the artists list below and fill it in. name, photo, bio and genre are needed; hometown and every link are optional (leave \"\" to hide). photo is a file in src/assets/ (e.g. assets/artists/phil.jpg) or a full https:// image link. Artists show in the order listed. An empty list shows \"New artists coming soon\".",
-  "_template": {
-    "name": "",
-    "photo": "assets/artists/NAME.jpg",
-    "bio": "",
-    "genre": "",
-    "hometown": "",
-    "links": {
-      "spotify": "",
-      "apple_music": "",
-      "instagram": "",
-      "tiktok": "",
-      "youtube": "",
-      "soundcloud": "",
-      "website": ""
-    }
+ "_how_to_add": "Signed artists page (zwrld.org/artists/). To add an artist, copy the block in _template into the artists list below and fill it in. name, photo, bio and genre are needed; hometown and every link are optional (leave \"\" to hide). photo is a file in src/assets/ (e.g. assets/artists/phil.jpg) or a full https:// image link. Artists show in the order listed. An empty list shows \"New artists coming soon\".",
+ "_template": {
+  "name": "",
+  "photo": "assets/artists/NAME.jpg",
+  "bio": "",
+  "genre": "",
+  "hometown": "",
+  "links": {
+   "spotify": "",
+   "apple_music": "",
+   "instagram": "",
+   "tiktok": "",
+   "youtube": "",
+   "soundcloud": "",
+   "website": ""
+  }
+ },
+ "headline": "Signed artists",
+ "intro": "The artists signed to ZWrld Music.",
+ "empty_message": "New artists coming soon",
+ "artists": [
+  {
+   "name": "ZWrld",
+   "photo": "assets/i-still-miss-you-cover.jpg",
+   "bio": "ZWrld (Zach Ikenberry) is a singer-songwriter from Diagonal, Iowa, writing country songs about faith, loss, and the people who shaped him. He started out in hip-hop, releasing his debut project \"Start of a New Life\" in 2020.",
+   "genre": "Country",
+   "hometown": "",
+   "links": {
+    "spotify": "https://open.spotify.com/artist/3NOvBcSzOHUpAqjqtWXLzQ",
+    "apple_music": "",
+    "instagram": "",
+    "tiktok": "",
+    "youtube": "",
+    "soundcloud": "",
+    "website": ""
+   }
   },
-  "headline": "Signed artists",
-  "intro": "The artists signed to ZWrld Music.",
-  "empty_message": "New artists coming soon",
-  "artists": [
-    {
-      "name": "ZWrld",
-      "photo": "assets/i-still-miss-you-cover.jpg",
-      "bio": "ZWrld (Zach Ikenberry) is a singer-songwriter from Diagonal, Iowa, writing country songs about faith, loss, and the people who shaped him. He started out in hip-hop, releasing his debut project \"Start of a New Life\" in 2020.",
-      "genre": "Country",
-      "hometown": "",
-      "links": {
-        "spotify": "https://open.spotify.com/artist/3NOvBcSzOHUpAqjqtWXLzQ",
-        "apple_music": "",
-        "instagram": "",
-        "tiktok": "",
-        "youtube": "",
-        "soundcloud": "",
-        "website": ""
-      }
-    }
-  ]
+  {
+   "name": "Hank Callahan",
+   "photo": "https://i.scdn.co/image/ab67616d0000b27323d37d3f70e055f531d17e64",
+   "bio": "Hank Callahan is a country singer born April 17, 1994, raised on backroads, Sunday hymns and his granddad's old radio. His warm baritone and honest songs about love, faith and home carry the classic sound of the heartland. His debut single \"I Run to You\" is out now on ZWrld Music, with \"Two Lane Highway\" (feat. ZWrld) on the way.",
+   "genre": "Country",
+   "hometown": "",
+   "links": {
+    "spotify": "https://open.spotify.com/album/1qj2IcXQ47mw3XeooRH8Ib",
+    "apple_music": "",
+    "instagram": "",
+    "tiktok": "",
+    "youtube": "",
+    "soundcloud": "",
+    "website": ""
+   }
+  }
+ ]
 }
